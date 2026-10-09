@@ -203,6 +203,18 @@ textarea.input { border-radius: var(--radius-sm); min-height: 110px; }
 .badge--sold-out { background: rgba(var(--c-text), .72); }
 .badge--new { background: #2F6E5B; color: #fff; }
 .badge--soon { background: #F2C14E; color: #3D2A05; }
+
+/* ---------- Рейтинг (відгуки) ---------- */
+.rating { display: inline-flex; align-items: center; gap: 6px; font-size: .85rem; color: rgb(var(--c-muted)); text-decoration: none; line-height: 1; }
+a.rating:hover .rating__count { text-decoration: underline; }
+.rating__stars { --star: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M12 2.8l2.8 5.9 6.4.8-4.7 4.4 1.2 6.4L12 17.2l-5.7 3.1 1.2-6.4-4.7-4.4 6.4-.8z'/%3E%3C/svg%3E");
+  position: relative; display: inline-block; width: 86px; height: 16px; flex: none;
+  background: linear-gradient(90deg, #E0A21B var(--rating, 0%), rgba(var(--c-text), .18) var(--rating, 0%));
+  -webkit-mask: var(--star) left center / 17.2px 16px repeat-x; mask: var(--star) left center / 17.2px 16px repeat-x; }
+.rating__value { font-weight: 700; color: rgb(var(--c-text)); }
+.card__rating { margin: 2px 0 4px; font-size: .8rem; }
+.card__rating .rating__stars { width: 74px; height: 14px; -webkit-mask-size: 14.8px 14px; mask-size: 14.8px 14px; }
+.product__rating { margin: -4px 0 4px; }
 .badge--ua { background: #FFD74A; color: #0B3D91; }
 
 /* ---------- Картка товару ---------- */

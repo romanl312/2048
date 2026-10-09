@@ -109,6 +109,17 @@
       "pickup_available": "Самовивіз: {{ location }} — {{ time }}",
       "pickup_generic": "Безкоштовний самовивіз у {{ address }}"
     },
+    "reviews": {
+      "heading": "Відгуки покупців",
+      "write": "Залишити відгук",
+      "aria": "Оцінка {{ rating }} з {{ max }}",
+      "count": {
+        "one": "{{ count }} відгук",
+        "few": "{{ count }} відгуки",
+        "many": "{{ count }} відгуків",
+        "other": "{{ count }} відгуків"
+      }
+    },
     "specs": {
       "players": "Гравців",
       "age": "Вік",

@@ -1,0 +1,26 @@
+{%- comment -%}
+  Зірочки рейтингу з метаполів відгуків (Judge.me пише reviews.rating і reviews.rating_count).
+  Параметри: product (обов'язково), link (true — посилання на відгуки на сторінці товару), empty_link (true — «Залишити відгук», якщо відгуків ще немає), class
+{%- endcomment -%}
+{%- liquid
+  assign r = product.metafields.reviews.rating.value
+  assign rc = product.metafields.reviews.rating_count.value | default: 0 | plus: 0
+-%}
+{%- if r != blank and rc > 0 -%}
+  {%- liquid
+    assign scale = r.scale_max | default: 5 | plus: 0
+    assign pct = r.rating | plus: 0 | times: 100.0 | divided_by: scale | round: 1
+    assign rating_txt = r.rating | plus: 0 | round: 1
+  -%}
+  {%- if link -%}<a href="#judgeme_product_reviews" class="rating {{ class }}">{%- else -%}<span class="rating {{ class }}">{%- endif -%}
+    <span class="rating__stars" style="--rating: {{ pct }}%;" aria-hidden="true"></span>
+    <span class="rating__value">{{ rating_txt }}</span>
+    <span class="rating__count">({{ 'products.reviews.count' | t: count: rc }})</span>
+    <span class="visually-hidden">{{ 'products.reviews.aria' | t: rating: rating_txt, max: scale }}</span>
+  {%- if link -%}</a>{%- else -%}</span>{%- endif -%}
+{%- elsif empty_link -%}
+  <a href="#judgeme_product_reviews" class="rating rating--empty {{ class }}">
+    <span class="rating__stars" style="--rating: 0%;" aria-hidden="true"></span>
+    <span class="rating__count">{{ 'products.reviews.write' | t }}</span>
+  </a>
+{%- endif -%}

@@ -66,6 +66,7 @@
       <div class="product__info">
         {%- if product.type != blank -%}<p class="product__eyebrow">{{ product.type | escape }}</p>{%- endif -%}
         <h1 class="product__title h1">{%- render 'product-title', product: product -%}</h1>
+        {%- render 'rating-stars', product: product, link: true, empty_link: true, class: 'product__rating' -%}
 
         {%- render 'game-specs', product: product, class: 'product__specs' -%}
 

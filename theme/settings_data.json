@@ -105,7 +105,31 @@
     "favicon": "shopify://shop_images/nich-favicon-badge.png",
     "social_instagram": "https://www.instagram.com/nastilni_ihry_chicago/",
     "social_facebook": "https://www.facebook.com/p/%D0%9D%D0%86%D0%A7-%D0%9D%D0%B0%D1%81%D1%82%D1%96%D0%BB%D1%8C%D0%BD%D1%96-%D0%86%D0%B3%D1%80%D0%B8-%D0%A7%D0%B8%D0%BA%D0%B0%D0%B3%D0%BE-61583284378681/",
-    "social_telegram": "https://t.me/nichdotgift"
+    "social_telegram": "https://t.me/nichdotgift",
+    "blocks": {
+      "14060646107696862457": {
+        "type": "shopify://apps/judge-me-reviews/blocks/judgeme_core/61ccd3b1-a9f2-4160-9fe9-4fec8413e5d8",
+        "disabled": false,
+        "settings": {}
+      },
+      "15683396631634586217": {
+        "type": "shopify://apps/inbox/blocks/chat/841fc607-4181-4ad1-842d-e24d7f8bad6b",
+        "disabled": false,
+        "settings": {
+          "greeting_message": "",
+          "button_color": "#C35B35",
+          "button_icon": "chat_bubble",
+          "button_text": "no_text",
+          "button_horizontal_position": "bottom_right",
+          "button_vertical_position": "lowest"
+        }
+      },
+      "13768625480086291342": {
+        "type": "shopify://apps/forms/blocks/forms/8744a304-fcb1-4347-b211-bb6b4759a76a",
+        "disabled": false,
+        "settings": {}
+      }
+    }
   },
   "presets": {
     "Default": {

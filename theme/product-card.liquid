@@ -76,6 +76,7 @@
     <h3 class="card__title">
       <a href="{{ product.url }}" class="card__link">{%- render 'product-title', product: product -%}</a>
     </h3>
+    {%- render 'rating-stars', product: product, class: 'card__rating' -%}
     {%- if settings.card_show_specs -%}
       {%- render 'game-specs', product: product -%}
     {%- endif -%}
