@@ -230,6 +230,14 @@
   }
   .hero .hero__dot[aria-selected='true'] { width: 26px; background: rgb(var(--c-text)); opacity: 1; }
 
+  @media (max-width: 749px) {
+    .hero .hero__inner { padding-top: 14px; padding-bottom: 40px; }
+    .hero .hero__heading { font-size: clamp(1.9rem, 8.6vw, 2.35rem); line-height: 1.08; margin-bottom: 8px; }
+    .hero .hero__text { font-size: 1rem; line-height: 1.4; margin-bottom: 14px; }
+    .hero .hero__text p { margin: 0; }
+    .hero .hero__button { min-height: 46px; padding: 10px 22px; font-size: 1rem; }
+    .hero .hero__dots { bottom: 14px; }
+  }
   @media (min-width: 750px) {
     .hero--small { --hero-h: 420px; }
     .hero--medium { --hero-h: 520px; }
