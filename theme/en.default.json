@@ -46,6 +46,10 @@
     }
   },
   "sections": {
+    "blog_teaser": {
+      "read": "Читати",
+      "all_posts": "Усі дописи"
+    },
     "announcement": {
       "label": "Оголошення"
     },

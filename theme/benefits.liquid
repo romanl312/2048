@@ -1,0 +1,91 @@
+<section class="benefits color-{{ section.settings.color_scheme }}">
+  <div class="page-width">
+    <div class="benefits__viewport">
+      <ul class="benefits__list" role="list">
+        {%- for block in section.blocks -%}
+          <li class="benefits__item" {{ block.shopify_attributes }}>
+            {%- render 'icon', name: block.settings.icon, class: 'icon benefits__icon' -%}
+            <span>{{ block.settings.text }}</span>
+          </li>
+        {%- endfor -%}
+      </ul>
+      {%- comment -%} Копія для безперервної бігучої стрічки на телефоні {%- endcomment -%}
+      <ul class="benefits__list benefits__list--clone" role="list" aria-hidden="true">
+        {%- for block in section.blocks -%}
+          <li class="benefits__item">
+            {%- render 'icon', name: block.settings.icon, class: 'icon benefits__icon' -%}
+            <span>{{ block.settings.text }}</span>
+          </li>
+        {%- endfor -%}
+      </ul>
+    </div>
+  </div>
+</section>
+
+{% stylesheet %}
+  .benefits { border-top: 1px solid rgb(var(--c-border)); border-bottom: 1px solid rgb(var(--c-border)); }
+  .benefits .benefits__viewport { display: flex; overflow: hidden; }
+  .benefits .benefits__list {
+    display: flex; flex: none; gap: 12px 32px; list-style: none; margin: 0; padding: 16px 32px 16px 0;
+    animation: benefits-marquee 22s linear infinite;
+  }
+  .benefits .benefits__viewport:hover .benefits__list,
+  .benefits .benefits__viewport:active .benefits__list { animation-play-state: paused; }
+  .benefits .benefits__item {
+    display: flex; align-items: center; gap: 10px; flex: none;
+    font-size: .88rem; font-weight: 600; white-space: nowrap;
+  }
+  .benefits .benefits__icon { width: 26px; height: 26px; color: rgb(var(--c-text)); }
+  @keyframes benefits-marquee { from { transform: translateX(0); } to { transform: translateX(-100%); } }
+  @media (min-width: 990px) {
+    .benefits .benefits__viewport { overflow: visible; }
+    .benefits .benefits__list { flex: 1; justify-content: space-between; padding: 20px 0; animation: none; }
+    .benefits .benefits__list--clone { display: none; }
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "t:names.benefits",
+  "tag": "section",
+  "class": "section-benefits",
+  "max_blocks": 6,
+  "settings": [
+    { "type": "color_scheme", "id": "color_scheme", "label": "t:settings.color_scheme", "default": "scheme-6" }
+  ],
+  "blocks": [
+    {
+      "type": "benefit",
+      "name": "t:blocks.benefit",
+      "settings": [
+        {
+          "type": "select", "id": "icon", "label": "t:settings.icon",
+          "options": [
+            { "value": "gift", "label": "t:options.icon_gift" },
+            { "value": "truck", "label": "t:options.icon_truck" },
+            { "value": "store", "label": "t:options.icon_store" },
+            { "value": "box", "label": "t:options.icon_box" },
+            { "value": "pin", "label": "t:options.icon_pin" },
+            { "value": "shield", "label": "t:options.icon_shield" },
+            { "value": "heart", "label": "t:options.icon_heart" },
+            { "value": "dice", "label": "t:options.icon_dice" }
+          ],
+          "default": "gift"
+        },
+        { "type": "text", "id": "text", "label": "t:settings.text", "default": "Офіційна продукція" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "t:names.benefits",
+      "blocks": [
+        { "type": "benefit", "settings": { "icon": "shield", "text": "Офіційна продукція" } },
+        { "type": "benefit", "settings": { "icon": "truck", "text": "Доставка по США та Канаді" } },
+        { "type": "benefit", "settings": { "icon": "store", "text": "Самовивіз у Des Plaines, IL" } },
+        { "type": "benefit", "settings": { "icon": "heart", "text": "Підтримуємо український бізнес" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

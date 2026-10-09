@@ -1,0 +1,98 @@
+{%- comment -%}
+  Блок «Блог» на головній: один допис (вибраний або найновіший у блозі) — фото, заголовок, уривок, кнопка.
+{%- endcomment -%}
+{%- liquid
+  assign b = section.settings.blog
+  assign a = section.settings.article
+  if a == blank and b != blank
+    assign a = b.articles.first
+  endif
+  assign btn = section.settings.button_label
+  if btn == blank
+    assign btn = 'sections.blog_teaser.read' | t
+  endif
+-%}
+{%- if a != blank -%}
+<section class="blog-teaser section color-{{ section.settings.color_scheme }}" style="--pt: {{ section.settings.padding_top }}px; --pb: {{ section.settings.padding_bottom }}px;">
+  <div class="page-width">
+    <article class="blog-teaser__box">
+      <a href="{{ a.url }}" class="blog-teaser__media" tabindex="-1" aria-hidden="true">
+        {%- if a.image -%}
+          {%- assign teaser_alt = a.image.alt | default: a.title | escape -%}
+          {{ a.image | image_url: width: 1400 | image_tag:
+            widths: '500, 800, 1100, 1400',
+            sizes: '(min-width: 990px) 640px, 100vw',
+            loading: 'lazy',
+            alt: teaser_alt
+          }}
+        {%- else -%}
+          <span class="blog-teaser__placeholder">{%- render 'icon', name: 'dice' -%}</span>
+        {%- endif -%}
+      </a>
+      <div class="blog-teaser__content">
+        {%- if section.settings.eyebrow != blank -%}
+          <p class="blog-teaser__eyebrow">{{ section.settings.eyebrow | escape }}</p>
+        {%- endif -%}
+        <h2 class="blog-teaser__title h2"><a href="{{ a.url }}">{{ a.title | escape }}</a></h2>
+        <div class="blog-teaser__excerpt">
+          {%- if a.excerpt != blank -%}{{ a.excerpt | strip_html | truncate: 260 }}{%- else -%}{{ a.content | strip_html | truncatewords: 40 }}{%- endif -%}
+        </div>
+        <div class="blog-teaser__actions">
+          <a href="{{ a.url }}" class="button">
+            {{ btn | escape }}
+            {%- render 'icon', name: 'arrow-right' -%}
+          </a>
+          {%- if b != blank and b.articles_count > 1 -%}
+            <a href="{{ b.url }}" class="blog-teaser__all">{{ 'sections.blog_teaser.all_posts' | t }}</a>
+          {%- endif -%}
+        </div>
+      </div>
+    </article>
+  </div>
+</section>
+{%- endif -%}
+
+{% stylesheet %}
+  .blog-teaser .blog-teaser__box {
+    display: grid; gap: 0; overflow: hidden;
+    border-radius: calc(var(--radius) + 6px);
+    background: rgb(var(--c-surface));
+    box-shadow: 0 10px 30px rgba(14, 36, 56, .07);
+  }
+  .blog-teaser .blog-teaser__media { position: relative; display: block; aspect-ratio: 16 / 10; overflow: hidden; background: rgba(var(--c-text), .04); }
+  .blog-teaser .blog-teaser__media img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; transition: transform .6s ease; }
+  .blog-teaser .blog-teaser__box:hover .blog-teaser__media img { transform: scale(1.03); }
+  .blog-teaser .blog-teaser__placeholder { position: absolute; inset: 0; display: grid; place-items: center; color: rgba(var(--c-accent), .4); }
+  .blog-teaser .blog-teaser__placeholder .icon { width: 30%; height: auto; }
+  .blog-teaser .blog-teaser__content { display: flex; flex-direction: column; align-items: flex-start; gap: 14px; padding: 24px 22px 28px; }
+  .blog-teaser .blog-teaser__eyebrow { margin: 0; font-size: .78rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: rgb(var(--c-accent)); }
+  .blog-teaser .blog-teaser__title { margin: 0; text-wrap: balance; }
+  .blog-teaser .blog-teaser__title a { color: inherit; text-decoration: none; }
+  .blog-teaser .blog-teaser__title a:hover { color: rgb(var(--c-accent)); }
+  .blog-teaser .blog-teaser__excerpt { color: rgb(var(--c-muted)); font-size: 1.02rem; line-height: 1.6; max-width: 52ch; }
+  .blog-teaser .blog-teaser__actions { display: flex; flex-wrap: wrap; align-items: center; gap: 12px 20px; margin-top: 4px; }
+  .blog-teaser .blog-teaser__all { font-weight: 700; color: rgb(var(--c-text)); }
+  @media (min-width: 900px) {
+    .blog-teaser .blog-teaser__box { grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr); align-items: stretch; }
+    .blog-teaser .blog-teaser__media { aspect-ratio: auto; min-height: 400px; }
+    .blog-teaser .blog-teaser__content { justify-content: center; padding: 44px 48px; }
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "t:names.blog_teaser",
+  "tag": "div",
+  "class": "section-blog-teaser",
+  "settings": [
+    { "type": "blog", "id": "blog", "label": "t:settings.blog", "info": "t:settings.blog_info" },
+    { "type": "article", "id": "article", "label": "t:settings.article", "info": "t:settings.article_info" },
+    { "type": "text", "id": "eyebrow", "label": "t:settings.eyebrow", "default": "Блог" },
+    { "type": "text", "id": "button_label", "label": "t:settings.button_label", "default": "Читати історію" },
+    { "type": "color_scheme", "id": "color_scheme", "label": "t:settings.color_scheme", "default": "scheme-1" },
+    { "type": "range", "id": "padding_top", "label": "t:settings.padding_top", "min": 0, "max": 100, "step": 4, "unit": "px", "default": 24 },
+    { "type": "range", "id": "padding_bottom", "label": "t:settings.padding_bottom", "min": 0, "max": 100, "step": 4, "unit": "px", "default": 56 }
+  ],
+  "presets": [{ "name": "t:names.blog_teaser" }]
+}
+{% endschema %}

@@ -308,12 +308,15 @@
           clearTimeout(t);
           t = setTimeout(() => this.sync(), 60);
         }, { passive: true });
-        this.addEventListener('mouseenter', () => this.stop());
-        this.addEventListener('mouseleave', () => this.start());
+        if (window.matchMedia('(hover: hover) and (pointer: fine)').matches) {
+          this.addEventListener('mouseenter', () => this.stop());
+          this.addEventListener('mouseleave', () => this.start());
+        }
         this.addEventListener('focusin', () => this.stop());
         this.addEventListener('focusout', () => this.start());
         this.track.addEventListener('touchstart', () => this.stop(), { passive: true });
         this.track.addEventListener('touchend', () => this.restart(), { passive: true });
+        this.track.addEventListener('touchcancel', () => this.restart(), { passive: true });
         this.onVisibility = () => (document.hidden ? this.stop() : this.start());
         document.addEventListener('visibilitychange', this.onVisibility);
         this.mark(0);
@@ -324,7 +327,7 @@
         if (this.onVisibility) document.removeEventListener('visibilitychange', this.onVisibility);
       }
       get canAutoplay() {
-        return this.dataset.autoplay === 'true' && !window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        return this.dataset.autoplay === 'true';
       }
       start() {
         if (!this.canAutoplay || this.timer) return;
@@ -336,7 +339,12 @@
       go(i) {
         const n = this.slides.length;
         const target = (i + n) % n;
-        this.track.scrollTo({ left: this.slides[target].offsetLeft, behavior: 'smooth' });
+        const smooth = !window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        /* iOS Safari ігнорує програмну прокрутку контейнера зі scroll-snap — вимикаємо snap на час переходу */
+        this.track.style.scrollSnapType = 'none';
+        this.track.scrollTo({ left: this.slides[target].offsetLeft, behavior: smooth ? 'smooth' : 'auto' });
+        clearTimeout(this.snapTimer);
+        this.snapTimer = setTimeout(() => { this.track.style.scrollSnapType = ''; }, smooth ? 700 : 50);
         this.mark(target);
       }
       sync() {
