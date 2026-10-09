@@ -101,7 +101,8 @@
           "border": "#EED8C4"
         }
       }
-    }
+    },
+    "favicon": "shopify://shop_images/nich-favicon-badge.png"
   },
   "presets": {
     "Default": {
