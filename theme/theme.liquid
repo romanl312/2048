@@ -6,6 +6,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="theme-color" content="{{ settings.color_schemes['scheme-1'].settings.background }}">
     <link rel="canonical" href="{{ canonical_url }}">
+    {%- comment -%} Системна колекція Shopify «Home page» (/collections/frontpage) — сюди потрапляють після входу в акаунт; ведемо на головну {%- endcomment -%}
+    {%- if template.name == 'collection' and collection.handle == 'frontpage' -%}
+      <meta name="robots" content="noindex">
+      <script>window.location.replace({{ routes.root_url | json }});</script>
+    {%- endif -%}
 
     {%- if settings.favicon != blank -%}
       <link rel="icon" type="image/png" href="{{ settings.favicon | image_url: width: 64, height: 64 }}">
