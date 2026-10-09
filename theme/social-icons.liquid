@@ -1,0 +1,17 @@
+{%- comment -%}
+  Іконки соцмереж з налаштувань теми (Соцмережі). Параметри: class — клас списку.
+{%- endcomment -%}
+{%- liquid
+  assign has_social = false
+  if settings.social_instagram != blank or settings.social_facebook != blank or settings.social_telegram != blank or settings.social_tiktok != blank
+    assign has_social = true
+  endif
+-%}
+{%- if has_social -%}
+  <ul class="social-icons {{ class }}" role="list">
+    {%- if settings.social_instagram != blank -%}<li><a href="{{ settings.social_instagram }}" class="social-icons__link" target="_blank" rel="noopener">{%- render 'icon', name: 'instagram' -%}<span class="visually-hidden">Instagram</span></a></li>{%- endif -%}
+    {%- if settings.social_facebook != blank -%}<li><a href="{{ settings.social_facebook }}" class="social-icons__link" target="_blank" rel="noopener">{%- render 'icon', name: 'facebook' -%}<span class="visually-hidden">Facebook</span></a></li>{%- endif -%}
+    {%- if settings.social_telegram != blank -%}<li><a href="{{ settings.social_telegram }}" class="social-icons__link" target="_blank" rel="noopener">{%- render 'icon', name: 'telegram' -%}<span class="visually-hidden">Telegram</span></a></li>{%- endif -%}
+    {%- if settings.social_tiktok != blank -%}<li><a href="{{ settings.social_tiktok }}" class="social-icons__link" target="_blank" rel="noopener">{%- render 'icon', name: 'tiktok' -%}<span class="visually-hidden">TikTok</span></a></li>{%- endif -%}
+  </ul>
+{%- endif -%}

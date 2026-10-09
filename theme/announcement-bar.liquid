@@ -18,6 +18,7 @@
         </p>
       {%- endfor -%}
     </announcement-rotator>
+    {%- render 'social-icons', class: 'announcement__social' -%}
   </div>
 </div>
 {%- endif -%}
@@ -30,12 +31,18 @@
   .announcement__item a { text-decoration: none; }
   .announcement__item a:hover { text-decoration: underline; }
   .announcement__icon { width: 17px; height: 17px; opacity: .9; }
+  .announcement__inner { gap: 20px; }
+  .announcement .announcement__social { display: none; }
+  .announcement .announcement__social .social-icons__link { width: 32px; height: 32px; }
+  .announcement .announcement__social .social-icons__link .icon { width: 17px; height: 17px; }
+  .announcement .announcement__social .social-icons__link:hover { background: rgba(255, 255, 255, .16); }
   @media (max-width: 989px) {
     .announcement__list { display: grid; justify-content: center; }
     .announcement__item { grid-area: 1 / 1; opacity: 0; visibility: hidden; transition: opacity .4s ease, visibility .4s; text-align: center; }
     .announcement__item.is-active { opacity: 1; visibility: visible; }
   }
   @media (min-width: 990px) {
+    .announcement .announcement__social { display: flex; flex: none; padding-left: 16px; border-left: 1px solid currentColor; border-left-color: rgba(255, 255, 255, .3); }
     .announcement__list[data-count='1'], .announcement__list[data-count='2'] { justify-content: center; gap: 56px; }
   }
 {% endstylesheet %}

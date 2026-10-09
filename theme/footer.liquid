@@ -1,0 +1,204 @@
+<footer class="footer color-{{ section.settings.color_scheme }}">
+  {%- if section.settings.show_newsletter -%}
+    <div class="footer__newsletter color-{{ section.settings.newsletter_scheme }}">
+      <div class="page-width footer__newsletter-inner">
+        <div class="footer__newsletter-text">
+          {%- if section.settings.newsletter_heading != blank -%}
+            <h2 class="h2 footer__newsletter-title">{{ section.settings.newsletter_heading | escape }}</h2>
+          {%- endif -%}
+          {%- if section.settings.newsletter_text != blank -%}
+            <div class="footer__newsletter-sub">{{ section.settings.newsletter_text }}</div>
+          {%- endif -%}
+        </div>
+        {%- form 'customer', id: 'FooterNewsletter', class: 'footer__newsletter-form' -%}
+          <input type="hidden" name="contact[tags]" value="newsletter">
+          <label for="FooterNewsletterEmail" class="visually-hidden">{{ 'general.newsletter.email' | t }}</label>
+          <input
+            id="FooterNewsletterEmail"
+            class="input"
+            type="email"
+            name="contact[email]"
+            autocomplete="email"
+            required
+            placeholder="{{ 'general.newsletter.email' | t }}"
+            {% if form.errors %}aria-invalid="true" aria-describedby="FooterNewsletterMsg"{% endif %}
+          >
+          <button type="submit" class="button">{{ 'general.newsletter.submit' | t }}</button>
+          {%- if form.posted_successfully? -%}
+            <p class="footer__newsletter-msg" id="FooterNewsletterMsg" role="status">{%- render 'icon', name: 'check' -%}{{ 'general.newsletter.success' | t }}</p>
+          {%- elsif form.errors -%}
+            <p class="footer__newsletter-msg footer__newsletter-msg--error" id="FooterNewsletterMsg" role="alert">{{ form.errors.translated_fields.email | capitalize }} {{ form.errors.messages.email }}</p>
+          {%- endif -%}
+        {%- endform -%}
+      </div>
+    </div>
+  {%- endif -%}
+
+  <div class="page-width footer__main">
+    <div class="footer__brand">
+      <a href="{{ routes.root_url }}" class="footer__logo" aria-label="{{ shop.name }}">{%- render 'logo', variant: section.settings.logo_variant -%}</a>
+      {%- if section.settings.about != blank -%}
+        <div class="footer__about">{{ section.settings.about }}</div>
+      {%- endif -%}
+      {%- render 'social-icons', class: 'footer__social' -%}
+    </div>
+
+    {%- for block in section.blocks -%}
+      <div class="footer__block" {{ block.shopify_attributes }}>
+        {%- case block.type -%}
+          {%- when 'menu' -%}
+            {%- if block.settings.heading != blank -%}<h2 class="footer__heading">{{ block.settings.heading | escape }}</h2>{%- endif -%}
+            {%- if block.settings.menu != blank -%}
+              <ul class="footer__links" role="list">
+                {%- for link in block.settings.menu.links -%}
+                  {%- if link.type == 'collection_link' -%}
+                    {%- if link.object == blank or link.object.products_count == 0 -%}{%- continue -%}{%- endif -%}
+                  {%- endif -%}
+                  <li><a href="{{ link.url }}">{{ link.title | escape }}</a></li>
+                {%- endfor -%}
+              </ul>
+            {%- endif -%}
+          {%- when 'contacts' -%}
+            {%- if block.settings.heading != blank -%}<h2 class="footer__heading">{{ block.settings.heading | escape }}</h2>{%- endif -%}
+            <ul class="footer__contacts" role="list">
+              {%- if settings.pickup_address != blank -%}
+                <li>{%- render 'icon', name: 'pin' -%}<span>{{ 'sections.footer.pickup' | t }}: {{ settings.pickup_address }}{% if settings.pickup_hours != blank %}<br><span class="footer__muted">{{ settings.pickup_hours }}</span>{% endif %}</span></li>
+              {%- endif -%}
+              {%- if settings.contact_phone != blank -%}
+                <li>{%- render 'icon', name: 'phone' -%}<a href="tel:{{ settings.contact_phone | remove: ' ' | remove: '(' | remove: ')' | remove: '-' }}">{{ settings.contact_phone }}</a></li>
+              {%- endif -%}
+              {%- if settings.contact_email != blank -%}
+                <li>{%- render 'icon', name: 'mail' -%}<a href="mailto:{{ settings.contact_email }}">{{ settings.contact_email }}</a></li>
+              {%- endif -%}
+              {%- if block.settings.text != blank -%}
+                <li class="footer__contacts-text">{{ block.settings.text }}</li>
+              {%- endif -%}
+            </ul>
+          {%- when 'text' -%}
+            {%- if block.settings.heading != blank -%}<h2 class="footer__heading">{{ block.settings.heading | escape }}</h2>{%- endif -%}
+            <div class="footer__text">{{ block.settings.text }}</div>
+        {%- endcase -%}
+      </div>
+    {%- endfor -%}
+  </div>
+
+  <div class="page-width footer__bottom">
+    <p class="footer__copy">&copy; {{ 'now' | date: '%Y' }} {{ shop.name | link_to: routes.root_url }}. {{ section.settings.copyright_text | escape }}</p>
+    {%- if section.settings.show_payment -%}
+      <ul class="footer__payment" role="list" aria-label="{{ 'sections.footer.payment' | t }}">
+        {%- for type in shop.enabled_payment_types -%}
+          <li>{{ type | payment_type_svg_tag: class: 'footer__payment-icon' }}</li>
+        {%- endfor -%}
+      </ul>
+    {%- endif -%}
+  </div>
+</footer>
+
+{% stylesheet %}
+  .footer { font-size: .95rem; }
+  .footer .footer__newsletter { padding: 44px 0; }
+  .footer .footer__newsletter-inner { display: grid; gap: 20px; align-items: center; }
+  @media (min-width: 990px) { .footer .footer__newsletter-inner { grid-template-columns: 1fr 1fr; gap: 48px; } }
+  .footer .footer__newsletter-title { margin: 0 0 6px; }
+  .footer .footer__newsletter-sub { opacity: .85; }
+  .footer .footer__newsletter-form { display: flex; flex-wrap: wrap; gap: 10px; }
+  .footer .footer__newsletter-form .input { flex: 1 1 220px; }
+  .footer .footer__newsletter-form .button { --btn-bg: var(--c-text); --btn-fg: var(--c-bg); }
+  .footer .footer__newsletter-msg { flex-basis: 100%; display: flex; align-items: center; gap: 8px; margin: 0; font-weight: 600; }
+  .footer .footer__newsletter-msg .icon { width: 20px; height: 20px; }
+
+  .footer .footer__main { display: grid; gap: 36px; padding-top: 52px; padding-bottom: 40px; grid-template-columns: 1fr 1fr; }
+  .footer .footer__brand { grid-column: 1 / -1; }
+  @media (min-width: 990px) {
+    .footer .footer__main { grid-template-columns: 1.4fr repeat(3, 1fr); gap: 48px; }
+    .footer .footer__brand { grid-column: auto; }
+  }
+  .footer .footer__logo { display: inline-block; margin-bottom: 14px; }
+  .footer .footer__logo .logo svg, .footer .footer__logo .logo img { width: 150px; height: auto; }
+  .footer .footer__about { color: rgb(var(--c-muted)); max-width: 34ch; }
+  .footer .footer__social { margin: 16px 0 0 -10px; }
+  .footer .footer__social .social-icons__link { width: 44px; height: 44px; }
+  .footer .footer__social .social-icons__link .icon { width: 24px; height: 24px; }
+  .footer .footer__heading { font-family: var(--font-body); font-size: .8rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; margin: 0 0 14px; color: rgb(var(--c-muted)); }
+  .footer .footer__links { display: grid; gap: 8px; list-style: none; margin: 0; padding: 0; }
+  .footer .footer__links a, .footer .footer__contacts a { text-decoration: none; }
+  .footer .footer__links a:hover, .footer .footer__contacts a:hover { text-decoration: underline; }
+  .footer .footer__contacts { display: grid; gap: 12px; list-style: none; margin: 0; padding: 0; }
+  .footer .footer__contacts li { display: flex; gap: 10px; align-items: flex-start; }
+  .footer .footer__contacts .icon { width: 20px; height: 20px; margin-top: 2px; color: rgb(var(--c-accent)); }
+  .footer .footer__muted, .footer .footer__contacts-text { color: rgb(var(--c-muted)); }
+  .footer .footer__bottom {
+    display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 16px;
+    padding-top: 20px; padding-bottom: 28px; border-top: 1px solid rgb(var(--c-border));
+    font-size: .85rem; color: rgb(var(--c-muted));
+  }
+  .footer .footer__copy { margin: 0; }
+  .footer .footer__copy a { text-decoration: none; }
+  .footer .footer__payment { display: flex; flex-wrap: wrap; gap: 6px; list-style: none; margin: 0; padding: 0; }
+  .footer .footer__payment-icon { width: 38px; height: 24px; }
+
+  /* Телефон: компактний футер — посилання в рядок, менші відступи */
+  @media (max-width: 749px) {
+    .footer .footer__newsletter { padding: 28px 0; }
+    .footer .footer__newsletter-inner { gap: 14px; }
+    .footer .footer__newsletter-title { font-size: 1.4rem; }
+    .footer .footer__main { grid-template-columns: 1fr; gap: 22px; padding-top: 32px; padding-bottom: 24px; }
+    .footer .footer__logo { margin-bottom: 8px; }
+    .footer .footer__about { font-size: .9rem; }
+    .footer .footer__social { margin-top: 8px; }
+    .footer .footer__heading { margin-bottom: 8px; }
+    .footer .footer__links { display: flex; flex-wrap: wrap; gap: 6px 18px; }
+    .footer .footer__contacts { gap: 8px; }
+    .footer .footer__bottom { padding-top: 16px; padding-bottom: 20px; gap: 10px; }
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "t:names.footer",
+  "tag": "div",
+  "class": "section-footer",
+  "max_blocks": 4,
+  "settings": [
+    { "type": "header", "content": "t:settings.newsletter" },
+    { "type": "checkbox", "id": "show_newsletter", "label": "t:settings.show_newsletter", "default": true },
+    { "type": "text", "id": "newsletter_heading", "label": "t:settings.heading", "default": "Будьте в грі" },
+    { "type": "richtext", "id": "newsletter_text", "label": "t:settings.text", "default": "<p>Новинки, знижки та ідеї для вечорів з друзями — раз на два тижні, без спаму.</p>" },
+    { "type": "color_scheme", "id": "newsletter_scheme", "label": "t:settings.color_scheme", "default": "scheme-2" },
+    { "type": "header", "content": "t:settings.footer_main" },
+    { "type": "select", "id": "logo_variant", "label": "t:settings.logo_variant", "options": [ { "value": "dark", "label": "t:options.logo_dark" }, { "value": "light", "label": "t:options.logo_light" } ], "default": "light" },
+    { "type": "richtext", "id": "about", "label": "t:settings.about", "default": "<p>Українські настільні ігри, подарунки та канцелярія в США. Збирай своїх!</p>" },
+    { "type": "text", "id": "copyright_text", "label": "t:settings.copyright", "default": "Зроблено з любов'ю в Чикаго." },
+    { "type": "checkbox", "id": "show_payment", "label": "t:settings.show_payment", "default": true },
+    { "type": "color_scheme", "id": "color_scheme", "label": "t:settings.color_scheme", "default": "scheme-3" }
+  ],
+  "blocks": [
+    {
+      "type": "menu",
+      "name": "t:blocks.menu",
+      "settings": [
+        { "type": "text", "id": "heading", "label": "t:settings.heading", "default": "Магазин" },
+        { "type": "link_list", "id": "menu", "label": "t:settings.menu", "default": "footer" }
+      ]
+    },
+    {
+      "type": "contacts",
+      "name": "t:blocks.contacts",
+      "limit": 1,
+      "settings": [
+        { "type": "paragraph", "content": "t:settings.contacts_info" },
+        { "type": "text", "id": "heading", "label": "t:settings.heading", "default": "Контакти" },
+        { "type": "richtext", "id": "text", "label": "t:settings.text" }
+      ]
+    },
+    {
+      "type": "text",
+      "name": "t:blocks.text",
+      "settings": [
+        { "type": "text", "id": "heading", "label": "t:settings.heading", "default": "Про нас" },
+        { "type": "richtext", "id": "text", "label": "t:settings.text", "default": "<p>Розкажіть покупцям про свій магазин.</p>" }
+      ]
+    }
+  ]
+}
+{% endschema %}

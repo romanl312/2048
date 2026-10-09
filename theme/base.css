@@ -171,6 +171,11 @@ textarea.input { border-radius: var(--radius-sm); min-height: 110px; }
   transition: background-color .15s ease;
 }
 .icon-button:hover { background: rgba(var(--c-text), .06); }
+.social-icons { display: flex; align-items: center; gap: 2px; list-style: none; margin: 0; padding: 0; }
+.social-icons__link { display: inline-grid; place-items: center; width: 40px; height: 40px; border-radius: 50%; color: inherit; transition: background .2s ease, transform .2s ease; }
+.social-icons__link:hover { background: rgba(var(--c-text), .08); transform: translateY(-1px); }
+.social-icons__link:focus-visible { outline: 2px solid currentColor; outline-offset: 2px; }
+.social-icons__link .icon { width: 22px; height: 22px; }
 .icon-button .icon { width: 24px; height: 24px; }
 .count-bubble {
   position: absolute; top: 2px; right: 0;
