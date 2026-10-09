@@ -14,10 +14,7 @@
             "icon": "dice",
             "color_scheme": "scheme-2",
             "image": "shopify://shop_images/nich-hero-v3-games.jpg",
-            "image_mobile": "shopify://shop_images/nich-hero-v3-games-mobile.jpg",
-            "photo_1": "shopify://shop_images/nich-hero-games-1.jpg",
-            "photo_2": "shopify://shop_images/nich-hero-games-2.jpg",
-            "photo_3": "shopify://shop_images/nich-hero-games-3.jpg"
+            "image_mobile": "shopify://shop_images/nich-hero-v3-games-mobile.jpg"
           }
         },
         "s2": {
@@ -31,10 +28,7 @@
             "color_scheme": "scheme-7",
             "image": "shopify://shop_images/nich-hero-v3-calendars.jpg",
             "image_mobile": "shopify://shop_images/nich-hero-v3-calendars-mobile.jpg",
-            "image_position": "right center",
-            "photo_1": "shopify://shop_images/nich-hero-calendars-1.jpg",
-            "photo_2": "shopify://shop_images/nich-hero-calendars-2.jpg",
-            "photo_3": "shopify://shop_images/nich-hero-calendars-3.jpg"
+            "image_position": "right center"
           }
         },
         "s3": {
@@ -48,10 +42,7 @@
             "color_scheme": "scheme-6",
             "image": "shopify://shop_images/nich-hero-v3-stationery.jpg",
             "image_mobile": "shopify://shop_images/nich-hero-v3-stationery-mobile.jpg",
-            "image_position": "right center",
-            "photo_1": "shopify://shop_images/nich-hero-stationery-1.jpg",
-            "photo_2": "shopify://shop_images/nich-hero-stationery-2.jpg",
-            "photo_3": "shopify://shop_images/nich-hero-stationery-3.jpg"
+            "image_position": "right center"
           }
         }
       },
