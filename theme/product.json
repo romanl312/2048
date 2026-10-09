@@ -26,7 +26,21 @@
         "color_scheme": "scheme-1",
         "padding_top": 32,
         "padding_bottom": 40
-      }
+      },
+      "blocks": {
+        "judgeme_review_widget": {
+          "type": "shopify://apps/judge-me-reviews/blocks/review_widget/61ccd3b1-a9f2-4160-9fe9-4fec8413e5d8",
+          "settings": {
+            "review_data": "no_reviews",
+            "max_width": 1200,
+            "show_shop_reviews": true,
+            "empty_state": "empty_widget"
+          }
+        }
+      },
+      "block_order": [
+        "judgeme_review_widget"
+      ]
     }
   },
   "order": [
