@@ -1,0 +1,102 @@
+{%- comment -%}
+  Картка товару.
+  Параметри: product (обов'язково), eager (true для перших карток над згином), sizes
+{%- endcomment -%}
+{%- liquid
+  assign variant = product.selected_or_first_available_variant
+  assign img1 = product.featured_media
+  assign img2 = nil
+  if settings.card_second_image and product.media.size > 1
+    assign img2 = product.media[1]
+  endif
+  assign on_sale = false
+  if product.compare_at_price > product.price
+    assign on_sale = true
+    assign pct = product.compare_at_price | minus: product.price | times: 100 | divided_by: product.compare_at_price | round
+  endif
+  assign now_s = 'now' | date: '%s' | plus: 0
+  assign created_s = product.created_at | date: '%s' | plus: 0
+  assign age_days = now_s | minus: created_s | divided_by: 86400
+  assign load = 'lazy'
+  if eager
+    assign load = 'eager'
+  endif
+  assign img_sizes = sizes | default: '(min-width: 990px) 240px, (min-width: 750px) 30vw, 46vw'
+  assign card_alt = img1.alt | default: product.title | escape
+  assign img1_class = 'card__img-1'
+  if img2
+    assign img1_class = 'card__img-1 card__img-1--has-2'
+  endif
+  assign coming_soon = false
+  if product.price == 0 and settings.coming_soon_text != blank and product.gift_card? == false
+    assign coming_soon = true
+  endif
+  assign single_variant = false
+  if product.has_only_default_variant or product.variants.size == 1
+    assign single_variant = true
+  endif
+-%}
+<div class="card{% if product.available == false and coming_soon == false %} card--sold-out{% endif %}">
+  <div class="card__media">
+    {%- if img1 -%}
+      {{ img1.preview_image | image_url: width: 600 | image_tag:
+        widths: '200, 300, 400, 500, 600',
+        sizes: img_sizes,
+        loading: load,
+        class: img1_class,
+        alt: card_alt
+      }}
+      {%- if img2 -%}
+        {{ img2.preview_image | image_url: width: 600 | image_tag:
+          widths: '200, 300, 400, 500, 600',
+          sizes: img_sizes,
+          loading: 'lazy',
+          class: 'card__img-2',
+          alt: ''
+        }}
+      {%- endif -%}
+    {%- else -%}
+      {{ 'product-1' | placeholder_svg_tag: 'placeholder-svg' }}
+    {%- endif -%}
+
+    <div class="card__badges">
+      {%- if coming_soon -%}
+        <span class="badge badge--soon">{{ 'products.product.coming_soon_badge' | t }}</span>
+      {%- elsif product.available == false -%}
+        <span class="badge badge--sold-out">{{ 'products.product.sold_out' | t }}</span>
+      {%- elsif on_sale -%}
+        <span class="badge badge--sale">−{{ pct }}%</span>
+      {%- elsif age_days < 45 -%}
+        <span class="badge badge--new">{{ 'products.product.new' | t }}</span>
+      {%- endif -%}
+    </div>
+  </div>
+
+  <div class="card__body">
+    <h3 class="card__title">
+      <a href="{{ product.url }}" class="card__link">{%- render 'product-title', product: product -%}</a>
+    </h3>
+    {%- if settings.card_show_specs -%}
+      {%- render 'game-specs', product: product -%}
+    {%- endif -%}
+    <div class="card__footer">
+      {%- render 'price', product: product -%}
+      {%- if settings.card_quick_add -%}
+        {%- if product.available and single_variant and coming_soon == false -%}
+          {%- form 'product', product, class: 'card__form', data-product-form: '' -%}
+            <input type="hidden" name="id" value="{{ variant.id }}">
+            <button type="submit" name="add" class="button button--outline">
+              {%- render 'icon', name: 'cart' -%}
+              <span class="card__btn-long">{{ 'products.product.add_to_cart' | t }}</span>
+              <span class="card__btn-short" aria-hidden="true">{{ 'products.product.add_short' | t }}</span>
+            </button>
+          {%- endform -%}
+        {%- elsif product.available and coming_soon == false -%}
+          <a href="{{ product.url }}" class="button button--outline">{{ 'products.product.choose_options' | t }}</a>
+        {%- else -%}
+          <a href="{{ product.url }}" class="button button--outline" aria-label="{{ 'products.product.notify_me' | t }}: {{ product.title | escape }}">{{ 'products.product.notify_me' | t }}</a>
+        {%- endif -%}
+      {%- endif -%}
+    </div>
+  </div>
+</div>

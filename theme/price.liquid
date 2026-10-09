@@ -1,0 +1,44 @@
+{%- comment -%}
+  Ціна. Параметри: product (обов'язково), variant (необов'язково), class, soon_label (true — коротке «Скоро в продажу» замість напису з налаштувань)
+{%- endcomment -%}
+{%- liquid
+  if variant
+    assign price = variant.price
+    assign compare = variant.compare_at_price
+    assign available = variant.available
+  else
+    assign price = product.price
+    assign compare = product.compare_at_price
+    assign available = product.available
+  endif
+  assign price_money = price | money
+  assign on_sale = false
+  if compare > price
+    assign on_sale = true
+  endif
+  assign coming_soon = false
+  if price == 0 and settings.coming_soon_text != blank and product.gift_card? == false
+    assign coming_soon = true
+    assign on_sale = false
+  endif
+  assign varies = false
+  if variant == blank and product.price_varies
+    assign varies = true
+  endif
+-%}
+{%- if coming_soon -%}
+<div class="price price--soon {{ class }}" data-price>
+  <span class="price__soon">{% if soon_label %}{{ 'products.product.coming_soon' | t }}{% else %}{{ settings.coming_soon_text | escape }}{% endif %}</span>
+</div>
+{%- else -%}
+<div class="price{% if available == false %} price--sold-out{% endif %}{% if on_sale %} price--on-sale{% endif %} {{ class }}" data-price>
+  <span class="visually-hidden">{% if on_sale %}{{ 'products.product.sale_price' | t }}{% else %}{{ 'products.product.price' | t }}{% endif %}</span>
+  <span class="price__current">
+    {%- if varies -%}{{ 'products.product.price_from' | t: price: price_money }}{%- else -%}{{ price | money }}{%- endif -%}
+  </span>
+  {%- if on_sale -%}
+    <span class="visually-hidden">{{ 'products.product.regular_price' | t }}</span>
+    <s class="price__compare">{{ compare | money }}</s>
+  {%- endif -%}
+</div>
+{%- endif -%}

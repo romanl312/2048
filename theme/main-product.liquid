@@ -70,16 +70,24 @@
         {%- render 'game-specs', product: product, class: 'product__specs' -%}
 
         <div class="product__price-row">
-          {%- render 'price', product: product, variant: variant, class: 'product__price' -%}
+          {%- render 'price', product: product, variant: variant, class: 'product__price', soon_label: true -%}
           {%- if variant.compare_at_price > variant.price -%}
             {%- assign pct = variant.compare_at_price | minus: variant.price | times: 100 | divided_by: variant.compare_at_price | round -%}
             <span class="badge badge--sale">−{{ pct }}%</span>
           {%- endif -%}
         </div>
 
-        <p class="product__stock{% unless variant.available %} is-out{% endunless %}{% if low_stock %} is-low{% endif %}">
+        {%- liquid
+          assign coming_soon = false
+          if variant.price == 0 and settings.coming_soon_text != blank and product.gift_card? == false
+            assign coming_soon = true
+          endif
+        -%}
+        <p class="product__stock{% if coming_soon %} is-soon{% elsif variant.available == false %} is-out{% endif %}{% if low_stock and coming_soon == false %} is-low{% endif %}">
           <span class="product__dot" aria-hidden="true"></span>
-          {%- if variant.available == false -%}
+          {%- if coming_soon -%}
+            {{ settings.coming_soon_text | escape }}
+          {%- elsif variant.available == false -%}
             {{ 'products.product.sold_out' | t }}
           {%- elsif low_stock -%}
             {{ 'products.product.low_stock' | t: count: variant.inventory_quantity }}
@@ -123,14 +131,14 @@
               class="button button--lg product__add"
               data-add-button
               data-add-label="{{ 'products.product.add_to_cart' | t }}"
-              {% unless variant.available %}disabled{% endunless %}
+              {% if variant.available == false or coming_soon %}disabled{% endif %}
             >
               {%- render 'icon', name: 'cart' -%}
-              <span>{% if variant.available %}{{ 'products.product.add_to_cart' | t }}{% else %}{{ 'products.product.sold_out' | t }}{% endif %}</span>
+              <span>{% if coming_soon %}{{ 'products.product.coming_soon' | t }}{% elsif variant.available %}{{ 'products.product.add_to_cart' | t }}{% else %}{{ 'products.product.sold_out' | t }}{% endif %}</span>
             </button>
           </div>
           <p class="product__error" data-form-error role="alert" hidden></p>
-          {%- if section.settings.show_dynamic_checkout and variant.available -%}
+          {%- if section.settings.show_dynamic_checkout and variant.available and coming_soon == false -%}
             <div class="product__dynamic">{{ form | payment_button }}</div>
           {%- endif -%}
         {%- endform -%}
@@ -200,7 +208,7 @@
   </div>
 </section>
 
-<script type="application/ld+json">{{ product | structured_data }}</script>
+{%- unless product.price == 0 -%}<script type="application/ld+json">{{ product | structured_data }}</script>{%- endunless -%}
 
 {% schema %}
 {
