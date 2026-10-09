@@ -1,0 +1,20 @@
+{
+  "sections": {
+    "main": {
+      "type": "main-product",
+      "settings": {
+        "show_dynamic_checkout": true,
+        "low_stock_threshold": 3,
+        "perk_shipping": "Безкоштовна доставка по США від $100",
+        "perk_gift": "Можемо запакувати як подарунок — напишіть у коментарі до замовлення",
+        "shipping_text": "<p>Відправляємо з Des Plaines, IL протягом 1–2 робочих днів. Доставка по США — 2–5 днів, у Канаду — 7–14 днів. Безкоштовна доставка по США від $100.</p>",
+        "returns_text": "<p>Нерозпаковані ігри можна повернути протягом 14 днів. Одяг, надрукований на замовлення, повертається лише у разі браку.</p>"
+      }
+    },
+    "related": {
+      "type": "related-products",
+      "settings": { "heading": "Вам також сподобається", "products_to_show": 5, "color_scheme": "scheme-2" }
+    }
+  },
+  "order": ["main", "related"]
+}

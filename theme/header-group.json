@@ -1,0 +1,29 @@
+{
+  "type": "header",
+  "name": "t:names.header_group",
+  "sections": {
+    "announcement": {
+      "type": "announcement-bar",
+      "blocks": {
+        "msg-1": { "type": "message", "settings": { "icon": "truck", "text": "Безкоштовна доставка при замовленні від $100", "link": "" } },
+        "msg-2": { "type": "message", "settings": { "icon": "box", "text": "Доставка по США та Канаді", "link": "" } },
+        "msg-3": { "type": "message", "settings": { "icon": "pin", "text": "Самовивіз у Des Plaines, IL", "link": "" } }
+      },
+      "block_order": ["msg-1", "msg-2", "msg-3"],
+      "settings": { "color_scheme": "scheme-5" }
+    },
+    "header": {
+      "type": "header",
+      "settings": {
+        "menu": "nich-main",
+        "hide_empty_collections": true,
+        "accent_title": "Розпродаж",
+        "show_search": true,
+        "search_placeholder": "Пошук ігор, подарунків, календарів…",
+        "sticky": true,
+        "color_scheme": "scheme-1"
+      }
+    }
+  },
+  "order": ["announcement", "header"]
+}

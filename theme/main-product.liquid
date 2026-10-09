@@ -1,0 +1,219 @@
+{%- liquid
+  assign variant = product.selected_or_first_available_variant
+  assign is_pod = false
+  if settings.pod_vendor != blank and product.vendor == settings.pod_vendor
+    assign is_pod = true
+  endif
+  assign low_stock = false
+  if variant.inventory_management == 'shopify' and variant.inventory_quantity > 0 and variant.inventory_quantity <= section.settings.low_stock_threshold
+    assign low_stock = true
+  endif
+  assign media_count = product.media.size
+-%}
+<section class="product section" data-product-section data-section-id="{{ section.id }}" style="--pt: 24px; --pb: 48px;">
+  <div class="page-width">
+    <nav class="breadcrumbs" aria-label="{{ 'general.breadcrumbs' | t }}">
+      <ol>
+        <li><a href="{{ routes.root_url }}">{{ 'general.home' | t }}</a></li>
+        {%- if collection -%}
+          <li><a href="{{ collection.url }}">{{ collection.title | escape }}</a></li>
+        {%- elsif product.collections.size > 0 -%}
+          {%- assign bc = product.collections | where: 'handle', 'vsi-nastilni-ihry' | first | default: product.collections.first -%}
+          <li><a href="{{ bc.url }}">{{ bc.title | escape }}</a></li>
+        {%- endif -%}
+        <li aria-current="page">{%- render 'product-title', product: product -%}</li>
+      </ol>
+    </nav>
+
+    <div class="product__grid">
+      <product-gallery class="product__gallery">
+        <ul class="product__slides" data-gallery-track role="list">
+          {%- for media in product.media -%}
+            {%- assign m_alt = media.alt | default: product.title | escape -%}
+            <li class="product__slide" data-media-id="{{ media.id }}">
+              {%- case media.media_type -%}
+                {%- when 'image' -%}
+                  {%- if forloop.first -%}{%- assign m_load = 'eager' -%}{%- else -%}{%- assign m_load = 'lazy' -%}{%- endif -%}
+                  {{ media | image_url: width: 1400 | image_tag:
+                    widths: '400, 600, 800, 1000, 1200, 1400',
+                    sizes: '(min-width: 990px) 50vw, 100vw',
+                    loading: m_load,
+                    alt: m_alt
+                  }}
+                {%- when 'video', 'external_video' -%}
+                  {{ media | media_tag: image_size: '1200x', controls: true, playsinline: true }}
+                {%- else -%}
+                  {{ media | media_tag }}
+              {%- endcase -%}
+            </li>
+          {%- else -%}
+            <li class="product__slide">{{ 'product-1' | placeholder_svg_tag: 'placeholder-svg' }}</li>
+          {%- endfor -%}
+        </ul>
+        {%- if media_count > 1 -%}
+          <ul class="product__thumbs" role="list">
+            {%- for media in product.media -%}
+              <li>
+                <button type="button" class="product__thumb" data-thumb="{{ forloop.index0 }}" aria-current="{% if forloop.first %}true{% else %}false{% endif %}" aria-label="{{ 'products.product.media_label' | t: index: forloop.index, count: media_count }}">
+                  {{ media.preview_image | image_url: width: 180 | image_tag: loading: 'lazy', width: 84, height: 84, alt: '' }}
+                </button>
+              </li>
+            {%- endfor -%}
+          </ul>
+        {%- endif -%}
+      </product-gallery>
+
+      <div class="product__info">
+        {%- if product.type != blank -%}<p class="product__eyebrow">{{ product.type | escape }}</p>{%- endif -%}
+        <h1 class="product__title h1">{%- render 'product-title', product: product -%}</h1>
+
+        {%- render 'game-specs', product: product, class: 'product__specs' -%}
+
+        <div class="product__price-row">
+          {%- render 'price', product: product, variant: variant, class: 'product__price' -%}
+          {%- if variant.compare_at_price > variant.price -%}
+            {%- assign pct = variant.compare_at_price | minus: variant.price | times: 100 | divided_by: variant.compare_at_price | round -%}
+            <span class="badge badge--sale">−{{ pct }}%</span>
+          {%- endif -%}
+        </div>
+
+        <p class="product__stock{% unless variant.available %} is-out{% endunless %}{% if low_stock %} is-low{% endif %}">
+          <span class="product__dot" aria-hidden="true"></span>
+          {%- if variant.available == false -%}
+            {{ 'products.product.sold_out' | t }}
+          {%- elsif low_stock -%}
+            {{ 'products.product.low_stock' | t: count: variant.inventory_quantity }}
+          {%- elsif is_pod -%}
+            {{ 'products.product.made_to_order' | t }}
+          {%- else -%}
+            {{ 'products.product.in_stock' | t }}
+          {%- endif -%}
+        </p>
+
+        {%- unless product.has_only_default_variant -%}
+          <variant-picker class="product__variants">
+            {%- for option in product.options_with_values -%}
+              <fieldset class="product__option">
+                <legend>{{ option.name | escape }}</legend>
+                <div class="product__option-values">
+                  {%- for value in option.values -%}
+                    <label class="pill">
+                      <input type="radio" name="{{ section.id }}-{{ option.position }}" value="{{ value | escape }}"{% if option.selected_value == value %} checked{% endif %}>
+                      <span>{{ value | escape }}</span>
+                    </label>
+                  {%- endfor -%}
+                </div>
+              </fieldset>
+            {%- endfor -%}
+            <script type="application/json">{{ product.variants | json }}</script>
+          </variant-picker>
+        {%- endunless -%}
+
+        {%- form 'product', product, class: 'product__form', data-product-form: '' -%}
+          <input type="hidden" name="id" value="{{ variant.id }}">
+          <div class="product__buy">
+            <div class="quantity">
+              <button type="button" class="quantity__button" data-qty-step="-1" aria-label="{{ 'products.product.qty_decrease' | t }}">{%- render 'icon', name: 'minus' -%}</button>
+              <input class="quantity__input" type="number" name="quantity" value="1" min="1" aria-label="{{ 'products.product.quantity' | t }}">
+              <button type="button" class="quantity__button" data-qty-step="1" aria-label="{{ 'products.product.qty_increase' | t }}">{%- render 'icon', name: 'plus' -%}</button>
+            </div>
+            <button
+              type="submit"
+              name="add"
+              class="button button--lg product__add"
+              data-add-button
+              data-add-label="{{ 'products.product.add_to_cart' | t }}"
+              {% unless variant.available %}disabled{% endunless %}
+            >
+              {%- render 'icon', name: 'cart' -%}
+              <span>{% if variant.available %}{{ 'products.product.add_to_cart' | t }}{% else %}{{ 'products.product.sold_out' | t }}{% endif %}</span>
+            </button>
+          </div>
+          <p class="product__error" data-form-error role="alert" hidden></p>
+          {%- if section.settings.show_dynamic_checkout and variant.available -%}
+            <div class="product__dynamic">{{ form | payment_button }}</div>
+          {%- endif -%}
+        {%- endform -%}
+
+        {%- unless product.available -%}
+          <div class="product__notify">
+            <p class="product__notify-title">{{ 'products.notify.title' | t }}</p>
+            {%- form 'contact', class: 'product__notify-form' -%}
+              {%- if form.posted_successfully? -%}
+                <p class="product__notify-ok" role="status">{%- render 'icon', name: 'check' -%}{{ 'products.notify.success' | t }}</p>
+              {%- else -%}
+                <input type="hidden" name="contact[subject]" value="{{ 'products.notify.subject' | t }}: {{ product.title | escape }}">
+                <input type="hidden" name="contact[body]" value="{{ 'products.notify.body' | t }}: {{ product.title | escape }} — {{ shop.url }}{{ product.url }}">
+                <label for="NotifyEmail-{{ section.id }}" class="visually-hidden">Email</label>
+                <input id="NotifyEmail-{{ section.id }}" type="email" name="contact[email]" class="input" placeholder="Email" required autocomplete="email">
+                <button type="submit" class="button button--dark">{{ 'products.notify.submit' | t }}</button>
+              {%- endif -%}
+            {%- endform -%}
+          </div>
+        {%- endunless -%}
+
+        <ul class="product__perks" role="list">
+          {%- if is_pod -%}
+            <li>{%- render 'icon', name: 'box' -%}<span>{{ settings.cart_note_printify }}</span></li>
+          {%- else -%}
+            {%- assign pickup_shown = false -%}
+            {%- for availability in variant.store_availabilities -%}
+              {%- if availability.pick_up_enabled and availability.available and pickup_shown == false -%}
+                <li>{%- render 'icon', name: 'store' -%}<span>{{ 'products.product.pickup_available' | t: location: availability.location.name, time: availability.pick_up_time }}</span></li>
+                {%- assign pickup_shown = true -%}
+              {%- endif -%}
+            {%- endfor -%}
+            {%- if pickup_shown == false and settings.pickup_address != blank -%}
+              <li>{%- render 'icon', name: 'store' -%}<span>{{ 'products.product.pickup_generic' | t: address: settings.pickup_address }}</span></li>
+            {%- endif -%}
+          {%- endif -%}
+          {%- if section.settings.perk_shipping != blank -%}
+            <li>{%- render 'icon', name: 'truck' -%}<span>{{ section.settings.perk_shipping }}</span></li>
+          {%- endif -%}
+          {%- if section.settings.perk_gift != blank -%}
+            <li>{%- render 'icon', name: 'gift' -%}<span>{{ section.settings.perk_gift }}</span></li>
+          {%- endif -%}
+        </ul>
+
+        <div class="product__accordions">
+          {%- if product.description != blank -%}
+            <details class="acc" open>
+              <summary class="acc__title">{{ 'products.product.description' | t }}{%- render 'icon', name: 'chevron-down' -%}</summary>
+              <div class="acc__body rte">{{ product.description }}</div>
+            </details>
+          {%- endif -%}
+          {%- if section.settings.shipping_text != blank -%}
+            <details class="acc">
+              <summary class="acc__title">{{ 'products.product.shipping' | t }}{%- render 'icon', name: 'chevron-down' -%}</summary>
+              <div class="acc__body rte">{{ section.settings.shipping_text }}</div>
+            </details>
+          {%- endif -%}
+          {%- if section.settings.returns_text != blank -%}
+            <details class="acc">
+              <summary class="acc__title">{{ 'products.product.returns' | t }}{%- render 'icon', name: 'chevron-down' -%}</summary>
+              <div class="acc__body rte">{{ section.settings.returns_text }}</div>
+            </details>
+          {%- endif -%}
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script type="application/ld+json">{{ product | structured_data }}</script>
+
+{% schema %}
+{
+  "name": "t:names.main_product",
+  "tag": "div",
+  "class": "section-main-product",
+  "settings": [
+    { "type": "checkbox", "id": "show_dynamic_checkout", "label": "t:settings.show_dynamic_checkout", "default": true },
+    { "type": "range", "id": "low_stock_threshold", "label": "t:settings.low_stock_threshold", "min": 1, "max": 10, "step": 1, "default": 3 },
+    { "type": "text", "id": "perk_shipping", "label": "t:settings.perk_shipping", "default": "Безкоштовна доставка по США від $100" },
+    { "type": "text", "id": "perk_gift", "label": "t:settings.perk_gift", "default": "Можемо запакувати як подарунок — напишіть у коментарі до замовлення" },
+    { "type": "richtext", "id": "shipping_text", "label": "t:settings.shipping_text", "default": "<p>Відправляємо з Des Plaines, IL протягом 1–2 робочих днів. Доставка по США — 2–5 днів, у Канаду — 7–14 днів. Безкоштовна доставка по США від $100.</p>" },
+    { "type": "richtext", "id": "returns_text", "label": "t:settings.returns_text", "default": "<p>Нерозпаковані ігри можна повернути протягом 14 днів. Одяг, надрукований на замовлення, повертається лише у разі браку.</p>" }
+  ]
+}
+{% endschema %}

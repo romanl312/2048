@@ -1,0 +1,212 @@
+{
+  "current": {
+    "logo_width": 170,
+    "font_heading": "Lora",
+    "font_body": "Manrope",
+    "font_accent": "Caveat",
+    "page_max_width": 1320,
+    "radius": 14,
+    "title_prefixes": "Настільна гра:, Настільна гра",
+    "card_show_specs": true,
+    "card_quick_add": true,
+    "card_second_image": true,
+    "card_image_ratio": "1/1",
+    "cart_type": "drawer",
+    "free_shipping_threshold": 100,
+    "cart_note_printify": "Одяг друкується на замовлення і приходить окремою посилкою за 5–10 днів.",
+    "pod_vendor": "Printify",
+    "pickup_address": "Des Plaines, IL",
+    "color_schemes": {
+      "scheme-1": {
+        "settings": {
+          "background": "#FCF9F3",
+          "surface": "#FFFFFF",
+          "text": "#0E2438",
+          "muted": "#52565E",
+          "accent": "#B4532F",
+          "button": "#C35B35",
+          "button_label": "#FFFFFF",
+          "border": "#EADFD2"
+        }
+      },
+      "scheme-2": {
+        "settings": {
+          "background": "#EFE2D2",
+          "surface": "#FCF9F3",
+          "text": "#0E2438",
+          "muted": "#52565E",
+          "accent": "#B4532F",
+          "button": "#C35B35",
+          "button_label": "#FFFFFF",
+          "border": "#E0D0BC"
+        }
+      },
+      "scheme-3": {
+        "settings": {
+          "background": "#0E2438",
+          "surface": "#16304A",
+          "text": "#FCF9F3",
+          "muted": "#AEB8C6",
+          "accent": "#EBA487",
+          "button": "#C35B35",
+          "button_label": "#FFFFFF",
+          "border": "#223B56"
+        }
+      },
+      "scheme-4": {
+        "settings": {
+          "background": "#C35B35",
+          "surface": "#CC6843",
+          "text": "#FFF8F1",
+          "muted": "#F8DDCF",
+          "accent": "#0E2438",
+          "button": "#0E2438",
+          "button_label": "#FFFFFF",
+          "border": "#D07A58"
+        }
+      },
+      "scheme-5": {
+        "settings": {
+          "background": "#776682",
+          "surface": "#83738E",
+          "text": "#FFFFFF",
+          "muted": "#E8E2EE",
+          "accent": "#FFFFFF",
+          "button": "#FFFFFF",
+          "button_label": "#0E2438",
+          "border": "#8A7C95"
+        }
+      },
+      "scheme-6": {
+        "settings": {
+          "background": "#F6F0E7",
+          "surface": "#FFFFFF",
+          "text": "#0E2438",
+          "muted": "#52565E",
+          "accent": "#B4532F",
+          "button": "#C35B35",
+          "button_label": "#FFFFFF",
+          "border": "#E8DDCF"
+        }
+      },
+      "scheme-7": {
+        "settings": {
+          "background": "#F9E9DA",
+          "surface": "#FCF9F3",
+          "text": "#0E2438",
+          "muted": "#52565E",
+          "accent": "#B4532F",
+          "button": "#C35B35",
+          "button_label": "#FFFFFF",
+          "border": "#EED8C4"
+        }
+      }
+    }
+  },
+  "presets": {
+    "Default": {
+      "logo_width": 170,
+      "font_heading": "Lora",
+      "font_body": "Manrope",
+      "font_accent": "Caveat",
+      "page_max_width": 1320,
+      "radius": 14,
+      "title_prefixes": "Настільна гра:, Настільна гра",
+      "card_show_specs": true,
+      "card_quick_add": true,
+      "card_second_image": true,
+      "card_image_ratio": "1/1",
+      "cart_type": "drawer",
+      "free_shipping_threshold": 100,
+      "cart_note_printify": "Одяг друкується на замовлення і приходить окремою посилкою за 5–10 днів.",
+      "pod_vendor": "Printify",
+      "pickup_address": "Des Plaines, IL",
+      "color_schemes": {
+        "scheme-1": {
+          "settings": {
+            "background": "#FCF9F3",
+            "surface": "#FFFFFF",
+            "text": "#0E2438",
+            "muted": "#52565E",
+            "accent": "#B4532F",
+            "button": "#C35B35",
+            "button_label": "#FFFFFF",
+            "border": "#EADFD2"
+          }
+        },
+        "scheme-2": {
+          "settings": {
+            "background": "#EFE2D2",
+            "surface": "#FCF9F3",
+            "text": "#0E2438",
+            "muted": "#52565E",
+            "accent": "#B4532F",
+            "button": "#C35B35",
+            "button_label": "#FFFFFF",
+            "border": "#E0D0BC"
+          }
+        },
+        "scheme-3": {
+          "settings": {
+            "background": "#0E2438",
+            "surface": "#16304A",
+            "text": "#FCF9F3",
+            "muted": "#AEB8C6",
+            "accent": "#EBA487",
+            "button": "#C35B35",
+            "button_label": "#FFFFFF",
+            "border": "#223B56"
+          }
+        },
+        "scheme-4": {
+          "settings": {
+            "background": "#C35B35",
+            "surface": "#CC6843",
+            "text": "#FFF8F1",
+            "muted": "#F8DDCF",
+            "accent": "#0E2438",
+            "button": "#0E2438",
+            "button_label": "#FFFFFF",
+            "border": "#D07A58"
+          }
+        },
+        "scheme-5": {
+          "settings": {
+            "background": "#776682",
+            "surface": "#83738E",
+            "text": "#FFFFFF",
+            "muted": "#E8E2EE",
+            "accent": "#FFFFFF",
+            "button": "#FFFFFF",
+            "button_label": "#0E2438",
+            "border": "#8A7C95"
+          }
+        },
+        "scheme-6": {
+          "settings": {
+            "background": "#F6F0E7",
+            "surface": "#FFFFFF",
+            "text": "#0E2438",
+            "muted": "#52565E",
+            "accent": "#B4532F",
+            "button": "#C35B35",
+            "button_label": "#FFFFFF",
+            "border": "#E8DDCF"
+          }
+        },
+        "scheme-7": {
+          "settings": {
+            "background": "#F9E9DA",
+            "surface": "#FCF9F3",
+            "text": "#0E2438",
+            "muted": "#52565E",
+            "accent": "#B4532F",
+            "button": "#C35B35",
+            "button_label": "#FFFFFF",
+            "border": "#EED8C4"
+          }
+        }
+      }
+    }
+  }
+}

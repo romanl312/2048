@@ -1,0 +1,108 @@
+{%- liquid
+  assign blocks_count = section.blocks.size
+-%}
+{%- if blocks_count > 0 -%}
+<div class="announcement color-{{ section.settings.color_scheme }}" role="region" aria-label="{{ 'sections.announcement.label' | t }}">
+  <div class="page-width announcement__inner">
+    <announcement-rotator class="announcement__list" data-count="{{ blocks_count }}">
+      {%- for block in section.blocks -%}
+        <p class="announcement__item{% if forloop.first %} is-active{% endif %}" {{ block.shopify_attributes }}>
+          {%- if block.settings.icon != 'none' -%}
+            {%- render 'icon', name: block.settings.icon, class: 'icon announcement__icon' -%}
+          {%- endif -%}
+          {%- if block.settings.link != blank -%}
+            <a href="{{ block.settings.link }}">{{ block.settings.text }}</a>
+          {%- else -%}
+            <span>{{ block.settings.text }}</span>
+          {%- endif -%}
+        </p>
+      {%- endfor -%}
+    </announcement-rotator>
+  </div>
+</div>
+{%- endif -%}
+
+{% stylesheet %}
+  .announcement { font-size: .82rem; font-weight: 500; }
+  .announcement__inner { min-height: 38px; display: flex; align-items: center; }
+  .announcement__list { position: relative; display: flex; align-items: center; justify-content: space-between; gap: 24px; width: 100%; }
+  .announcement__item { display: flex; align-items: center; justify-content: center; gap: 8px; margin: 0; }
+  .announcement__item a { text-decoration: none; }
+  .announcement__item a:hover { text-decoration: underline; }
+  .announcement__icon { width: 17px; height: 17px; opacity: .9; }
+  @media (max-width: 989px) {
+    .announcement__list { display: grid; justify-content: center; }
+    .announcement__item { grid-area: 1 / 1; opacity: 0; visibility: hidden; transition: opacity .4s ease, visibility .4s; text-align: center; }
+    .announcement__item.is-active { opacity: 1; visibility: visible; }
+  }
+  @media (min-width: 990px) {
+    .announcement__list[data-count='1'], .announcement__list[data-count='2'] { justify-content: center; gap: 56px; }
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "t:names.announcement_bar",
+  "tag": "section",
+  "class": "section-announcement",
+  "max_blocks": 4,
+  "settings": [
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "t:settings.color_scheme",
+      "default": "scheme-5"
+    },
+    {
+      "type": "paragraph",
+      "content": "t:settings.announcement_info"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "message",
+      "name": "t:blocks.message",
+      "settings": [
+        {
+          "type": "select",
+          "id": "icon",
+          "label": "t:settings.icon",
+          "options": [
+            { "value": "none", "label": "t:options.none" },
+            { "value": "truck", "label": "t:options.icon_truck" },
+            { "value": "store", "label": "t:options.icon_store" },
+            { "value": "box", "label": "t:options.icon_box" },
+            { "value": "pin", "label": "t:options.icon_pin" },
+            { "value": "gift", "label": "t:options.icon_gift" },
+            { "value": "shield", "label": "t:options.icon_shield" },
+            { "value": "dice", "label": "t:options.icon_dice" },
+            { "value": "heart", "label": "t:options.icon_heart" }
+          ],
+          "default": "truck"
+        },
+        {
+          "type": "text",
+          "id": "text",
+          "label": "t:settings.text",
+          "default": "Безкоштовна доставка при замовленні від $100"
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "t:settings.link"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "t:names.announcement_bar",
+      "blocks": [
+        { "type": "message", "settings": { "icon": "truck", "text": "Безкоштовна доставка при замовленні від $100" } },
+        { "type": "message", "settings": { "icon": "box", "text": "Доставка по США та Канаді" } },
+        { "type": "message", "settings": { "icon": "pin", "text": "Самовивіз у Des Plaines, IL" } }
+      ]
+    }
+  ]
+}
+{% endschema %}
