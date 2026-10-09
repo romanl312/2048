@@ -1,0 +1,418 @@
+{%- comment -%}
+  Головний банер-карусель: кожен блок «Слайд» — окремий банер.
+  Гортається свайпом (телефон), стрілками й крапками; автопрокрутка налаштовується.
+{%- endcomment -%}
+{%- liquid
+  assign overlay = section.settings.overlay | divided_by: 100.0
+  assign slide_count = section.blocks.size
+  assign speed_ms = section.settings.autoplay_speed | times: 1000
+-%}
+<hero-slider
+  class="hero hero--{{ section.settings.height }}"
+  style="--hero-overlay: {{ overlay }};"
+  data-autoplay="{{ section.settings.autoplay }}"
+  data-speed="{{ speed_ms }}"
+  role="region"
+  aria-roledescription="carousel"
+  aria-label="{{ 'sections.hero.label' | t }}"
+>
+  <div class="hero__track" data-track>
+    {%- for block in section.blocks -%}
+      {%- liquid
+        assign img = block.settings.image
+        assign img_m = block.settings.image_mobile | default: img
+        assign hero_alt = block.settings.heading | default: img.alt | strip_newlines | escape
+        assign slide_link = block.settings.link | default: routes.all_products_collection_url
+        assign p1 = block.settings.photo_1
+        assign p2 = block.settings.photo_2
+        assign p3 = block.settings.photo_3
+        assign has_trio = false
+        if p1 != blank or p2 != blank or p3 != blank
+          assign has_trio = true
+        endif
+        assign blur_img = p2 | default: p1 | default: p3
+        if forloop.first
+          assign img_load = 'eager'
+          assign img_priority = 'high'
+        else
+          assign img_load = 'lazy'
+          assign img_priority = 'auto'
+        endif
+      -%}
+      <div
+        class="hero__slide color-{{ block.settings.color_scheme }}{% if has_trio %} hero__slide--trio{% elsif block.settings.text_in_image and img != blank %} hero__slide--image-only{% endif %}"
+        style="--hero-pos: {{ block.settings.image_position }};"
+        role="group"
+        aria-roledescription="slide"
+        aria-label="{{ forloop.index }} / {{ slide_count }}"
+        data-slide
+        {{ block.shopify_attributes }}
+      >
+        <div class="hero__media">
+          {%- if has_trio -%}
+            <div class="hero__blur" aria-hidden="true">
+              {{ blur_img | image_url: width: 500 | image_tag: loading: img_load, class: 'hero__blur-img', alt: '' }}
+            </div>
+            <div class="hero__trio">
+              {%- for n in (1..3) -%}
+                {%- assign key = 'photo_' | append: n -%}
+                {%- assign photo = block.settings[key] -%}
+                {%- if photo != blank -%}
+                  <div class="hero__trio-card">
+                    {{ photo | image_url: width: 640 | image_tag:
+                      widths: '240, 360, 480, 640',
+                      sizes: '(min-width: 750px) min(16vw, 220px), 31vw',
+                      loading: img_load,
+                      fetchpriority: img_priority,
+                      class: 'hero__trio-img',
+                      alt: ''
+                    }}
+                  </div>
+                {%- endif -%}
+              {%- endfor -%}
+            </div>
+          {%- elsif img != blank -%}
+            <picture>
+              {%- if block.settings.image_mobile != blank -%}
+                <source media="(max-width: 749px)" srcset="{{ img_m | image_url: width: 750 }} 750w, {{ img_m | image_url: width: 1100 }} 1100w" sizes="100vw">
+              {%- endif -%}
+              {{ img | image_url: width: 2400 | image_tag:
+                widths: '750, 1100, 1500, 1800, 2400',
+                sizes: '100vw',
+                loading: img_load,
+                fetchpriority: img_priority,
+                class: 'hero__img',
+                alt: hero_alt
+              }}
+            </picture>
+          {%- else -%}
+            <div class="hero__placeholder" aria-hidden="true">
+              {%- render 'icon', name: block.settings.icon, class: 'hero__placeholder-icon' -%}
+            </div>
+          {%- endif -%}
+          <div class="hero__fade" aria-hidden="true"></div>
+        </div>
+
+        {%- if block.settings.text_in_image and img != blank and has_trio == false -%}
+          <a href="{{ slide_link }}" class="hero__cover-link"><span class="visually-hidden">{{ hero_alt }}</span></a>
+        {%- else -%}
+          <div class="page-width hero__inner">
+            <div class="hero__content">
+              {%- if block.settings.heading != blank -%}
+                {%- if forloop.first -%}
+                  <h2 class="h0 hero__heading">{{ block.settings.heading | newline_to_br }}</h2>
+                {%- else -%}
+                  <p class="h0 hero__heading">{{ block.settings.heading | newline_to_br }}</p>
+                {%- endif -%}
+              {%- endif -%}
+              {%- if block.settings.text != blank -%}
+                <div class="hero__text">{{ block.settings.text }}</div>
+              {%- endif -%}
+              {%- if block.settings.button_label != blank -%}
+                <a href="{{ slide_link }}" class="button button--lg hero__button"{% unless forloop.first %} tabindex="-1"{% endunless %}>
+                  {{ block.settings.button_label | escape }}
+                  {%- render 'icon', name: 'arrow-right' -%}
+                </a>
+              {%- endif -%}
+            </div>
+            {%- if block.settings.note != blank -%}
+              <p class="hero__note accent-font" aria-hidden="true">
+                <span>{{ block.settings.note | newline_to_br }}</span>
+                {%- render 'icon', name: 'arrow-curve', class: 'hero__note-arrow' -%}
+              </p>
+            {%- endif -%}
+          </div>
+        {%- endif -%}
+      </div>
+    {%- endfor -%}
+  </div>
+
+  {%- if slide_count > 1 -%}
+    <button type="button" class="hero__arrow hero__arrow--prev" data-prev aria-label="{{ 'general.slider.prev' | t }}">
+      {%- render 'icon', name: 'chevron-left' -%}
+    </button>
+    <button type="button" class="hero__arrow hero__arrow--next" data-next aria-label="{{ 'general.slider.next' | t }}">
+      {%- render 'icon', name: 'chevron-right' -%}
+    </button>
+    <div class="hero__dots" role="tablist" aria-label="{{ 'sections.hero.label' | t }}">
+      {%- for block in section.blocks -%}
+        <button
+          type="button"
+          class="hero__dot"
+          role="tab"
+          data-dot="{{ forloop.index0 }}"
+          aria-label="{{ forloop.index }} / {{ slide_count }}"
+          aria-selected="{% if forloop.first %}true{% else %}false{% endif %}"
+        ></button>
+      {%- endfor -%}
+    </div>
+  {%- endif -%}
+</hero-slider>
+
+{% stylesheet %}
+  .section-hero { position: relative; }
+  .hero { position: relative; display: block; overflow: hidden; }
+  .hero .hero__track {
+    display: flex; overflow-x: auto; overflow-y: hidden;
+    scroll-snap-type: x mandatory; scroll-behavior: smooth;
+    scrollbar-width: none; overscroll-behavior-x: contain;
+  }
+  .hero .hero__track::-webkit-scrollbar { display: none; }
+  .hero .hero__slide {
+    position: relative; flex: 0 0 100%; min-width: 0;
+    display: flex; flex-direction: column;
+    scroll-snap-align: start; scroll-snap-stop: always;
+  }
+  .hero .hero__media { position: relative; aspect-ratio: 4 / 3; background: rgb(var(--c-surface)); }
+  .hero .hero__media picture, .hero .hero__img { position: absolute; inset: 0; width: 100%; height: 100%; }
+  .hero .hero__img { object-fit: cover; object-position: var(--hero-pos, center); }
+  .hero .hero__placeholder {
+    position: absolute; inset: 0; display: grid; place-items: center;
+    background: linear-gradient(135deg, rgba(255, 255, 255, .35), rgba(195, 91, 53, .08));
+    color: rgba(195, 91, 53, .35);
+  }
+  .hero .hero__placeholder-icon { width: 30%; height: auto; max-width: 240px; aspect-ratio: 1; }
+  .hero .hero__fade { display: none; }
+  .hero .hero__inner { position: relative; padding-top: 24px; padding-bottom: 56px; }
+  .hero .hero__heading { margin: 0 0 14px; max-width: 12ch; }
+  .hero .hero__text { font-size: 1.1rem; line-height: 1.45; max-width: 36ch; margin-bottom: 24px; }
+  .hero .hero__note { display: none; }
+  .hero .hero__cover-link { position: absolute; inset: 0; z-index: 1; }
+  .hero .hero__slide--image-only .hero__fade { display: none !important; }
+
+  /* Три фото на розмитому фоні */
+  .hero .hero__slide--trio .hero__media {
+    aspect-ratio: auto; overflow: hidden; background: rgb(var(--c-bg));
+    padding: 18px 16px 20px;
+  }
+  .hero .hero__blur { position: absolute; inset: 0; overflow: hidden; }
+  .hero .hero__blur-img {
+    position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover;
+    filter: blur(34px) saturate(1.15); transform: scale(1.25); opacity: .85;
+  }
+  .hero .hero__trio {
+    position: relative; display: flex; justify-content: center;
+    gap: clamp(8px, 1.8vw, 28px);
+  }
+  .hero .hero__trio-card {
+    flex: 1 1 0; min-width: 0; max-width: 240px;
+    aspect-ratio: 1 / 1.7; border-radius: 12px; overflow: hidden;
+    background: rgb(var(--c-surface));
+    box-shadow: 0 12px 28px rgba(40, 22, 10, .28);
+  }
+  .hero .hero__trio-img { display: block; width: 100%; height: 100%; object-fit: cover; object-position: center; }
+  .hero .hero__slide--trio .hero__fade { display: none; }
+  @media (max-width: 749px) {
+    .hero .hero__slide--trio .hero__inner { padding-top: 18px; padding-bottom: 46px; }
+  }
+
+  .hero .hero__arrow {
+    position: absolute; z-index: 2; top: 50%; transform: translateY(-50%);
+    width: 46px; height: 46px; border-radius: 50%; border: 0;
+    display: none; place-items: center;
+    background: rgba(255, 255, 255, .92); color: rgb(var(--c-text));
+    box-shadow: 0 6px 18px rgba(14, 36, 56, .15);
+    transition: transform .15s ease, background-color .15s ease;
+  }
+  .hero .hero__arrow:hover { background: #fff; transform: translateY(-50%) scale(1.06); }
+  .hero .hero__arrow .icon { width: 22px; height: 22px; }
+  .hero .hero__arrow--prev { left: 16px; }
+  .hero .hero__arrow--next { right: 16px; }
+
+  .hero .hero__dots {
+    position: absolute; z-index: 2; left: 0; right: 0; bottom: 18px;
+    display: flex; justify-content: center; gap: 8px; pointer-events: none;
+  }
+  .hero .hero__dot {
+    width: 10px; height: 10px; padding: 0; border-radius: 999px; pointer-events: auto;
+    border: 1.5px solid rgb(var(--c-text)); background: transparent; opacity: .55;
+    transition: width .25s ease, opacity .2s ease, background-color .2s ease;
+  }
+  .hero .hero__dot[aria-selected='true'] { width: 26px; background: rgb(var(--c-text)); opacity: 1; }
+
+  @media (min-width: 750px) {
+    .hero--small { --hero-h: 420px; }
+    .hero--medium { --hero-h: 520px; }
+    .hero--large { --hero-h: 640px; }
+    .hero .hero__slide { display: block; min-height: var(--hero-h, 520px); }
+    .hero .hero__media { position: absolute; inset: 0; aspect-ratio: auto; }
+    .hero .hero__fade {
+      display: block; position: absolute; inset: 0;
+      background: linear-gradient(90deg,
+        rgba(var(--c-bg), calc(var(--hero-overlay) + .1)) 0%,
+        rgba(var(--c-bg), var(--hero-overlay)) 32%,
+        rgba(var(--c-bg), 0) 62%);
+    }
+    .hero .hero__inner { display: flex; align-items: center; min-height: var(--hero-h, 520px); padding-top: 48px; padding-bottom: 64px; }
+    .hero .hero__content { max-width: 560px; }
+    .hero .hero__text { font-size: 1.25rem; }
+    .hero .hero__note {
+      display: flex; flex-direction: column; align-items: flex-end;
+      position: absolute; right: 88px; top: 36px;
+      max-width: 220px; margin: 0;
+      font-size: 1.9rem; text-align: center; transform: rotate(-7deg);
+      color: rgb(var(--c-text));
+    }
+    .hero .hero__note-arrow { width: 72px; height: 54px; margin-top: 6px; margin-right: 40px; color: rgb(var(--c-text)); }
+    .hero .hero__arrow { display: grid; }
+    .hero .hero__slide--trio .hero__media { position: absolute; inset: 0; padding: 0; }
+    .hero .hero__slide--trio .hero__fade { display: block; }
+    .hero .hero__slide--trio .hero__blur {
+      -webkit-mask-image: linear-gradient(90deg, transparent 30%, #000 68%);
+      mask-image: linear-gradient(90deg, transparent 30%, #000 68%);
+    }
+    .hero .hero__trio {
+      position: absolute; top: 50%; transform: translateY(-50%);
+      right: clamp(76px, 7vw, 150px); width: min(46vw, 680px);
+    }
+    .hero .hero__trio-card { aspect-ratio: 1 / 1.85; max-width: none; border-radius: 18px; box-shadow: 0 18px 40px rgba(40, 22, 10, .3); }
+    .hero .hero__inner.page-width { padding-left: 88px; padding-right: 88px; }
+  }
+  @media (min-width: 1400px) {
+    .hero .hero__inner.page-width { padding-left: 32px; padding-right: 32px; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .hero .hero__track { scroll-behavior: auto; }
+  }
+{% endstylesheet %}
+
+{% javascript %}
+  if (!customElements.get('hero-slider')) {
+    customElements.define('hero-slider', class extends HTMLElement {
+      connectedCallback() {
+        this.track = this.querySelector('[data-track]');
+        this.slides = Array.from(this.querySelectorAll('[data-slide]'));
+        this.dots = Array.from(this.querySelectorAll('[data-dot]'));
+        if (!this.track || this.slides.length < 2) return;
+        this.index = 0;
+        const prev = this.querySelector('[data-prev]');
+        const next = this.querySelector('[data-next]');
+        if (prev) prev.addEventListener('click', () => { this.go(this.index - 1); this.restart(); });
+        if (next) next.addEventListener('click', () => { this.go(this.index + 1); this.restart(); });
+        this.dots.forEach((d) => d.addEventListener('click', () => { this.go(parseInt(d.dataset.dot, 10)); this.restart(); }));
+        let t;
+        this.track.addEventListener('scroll', () => {
+          clearTimeout(t);
+          t = setTimeout(() => this.sync(), 60);
+        }, { passive: true });
+        this.addEventListener('mouseenter', () => this.stop());
+        this.addEventListener('mouseleave', () => this.start());
+        this.addEventListener('focusin', () => this.stop());
+        this.addEventListener('focusout', () => this.start());
+        this.track.addEventListener('touchstart', () => this.stop(), { passive: true });
+        this.track.addEventListener('touchend', () => this.restart(), { passive: true });
+        this.onVisibility = () => (document.hidden ? this.stop() : this.start());
+        document.addEventListener('visibilitychange', this.onVisibility);
+        this.mark(0);
+        this.start();
+      }
+      disconnectedCallback() {
+        this.stop();
+        if (this.onVisibility) document.removeEventListener('visibilitychange', this.onVisibility);
+      }
+      get canAutoplay() {
+        return this.dataset.autoplay === 'true' && !window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      }
+      start() {
+        if (!this.canAutoplay || this.timer) return;
+        const speed = parseInt(this.dataset.speed, 10) || 5000;
+        this.timer = setInterval(() => this.go(this.index + 1), speed);
+      }
+      stop() { clearInterval(this.timer); this.timer = null; }
+      restart() { this.stop(); this.start(); }
+      go(i) {
+        const n = this.slides.length;
+        const target = (i + n) % n;
+        this.track.scrollTo({ left: this.slides[target].offsetLeft, behavior: 'smooth' });
+        this.mark(target);
+      }
+      sync() {
+        const w = this.track.clientWidth || 1;
+        this.mark(Math.round(this.track.scrollLeft / w));
+      }
+      mark(i) {
+        this.index = i;
+        this.dots.forEach((d, n) => d.setAttribute('aria-selected', n === i ? 'true' : 'false'));
+        this.slides.forEach((s, n) => {
+          s.setAttribute('aria-hidden', n === i ? 'false' : 'true');
+          s.querySelectorAll('a, button').forEach((el) => { el.tabIndex = n === i ? 0 : -1; });
+        });
+      }
+    });
+  }
+{% endjavascript %}
+
+{% schema %}
+{
+  "name": "t:names.hero",
+  "tag": "section",
+  "class": "section-hero",
+  "max_blocks": 8,
+  "settings": [
+    { "type": "checkbox", "id": "autoplay", "label": "t:settings.autoplay", "default": true },
+    { "type": "range", "id": "autoplay_speed", "label": "t:settings.autoplay_speed", "min": 3, "max": 10, "step": 1, "unit": "s", "default": 5 },
+    {
+      "type": "select", "id": "height", "label": "t:settings.height",
+      "options": [
+        { "value": "small", "label": "t:options.small" },
+        { "value": "medium", "label": "t:options.medium" },
+        { "value": "large", "label": "t:options.large" }
+      ],
+      "default": "medium"
+    },
+    { "type": "range", "id": "overlay", "label": "t:settings.overlay", "min": 0, "max": 90, "step": 5, "unit": "%", "default": 55 }
+  ],
+  "blocks": [
+    {
+      "type": "slide",
+      "name": "t:blocks.slide",
+      "settings": [
+        { "type": "image_picker", "id": "image", "label": "t:settings.image", "info": "t:settings.hero_image_info" },
+        { "type": "image_picker", "id": "image_mobile", "label": "t:settings.image_mobile" },
+        { "type": "checkbox", "id": "text_in_image", "label": "t:settings.text_in_image", "info": "t:settings.text_in_image_info", "default": false },
+        {
+          "type": "select", "id": "image_position", "label": "t:settings.image_position",
+          "options": [
+            { "value": "center", "label": "t:options.center" },
+            { "value": "right center", "label": "t:options.right" },
+            { "value": "left center", "label": "t:options.left" }
+          ],
+          "default": "right center"
+        },
+        { "type": "textarea", "id": "heading", "label": "t:settings.heading" },
+        { "type": "richtext", "id": "text", "label": "t:settings.text" },
+        { "type": "text", "id": "button_label", "label": "t:settings.button_label" },
+        { "type": "url", "id": "link", "label": "t:settings.link" },
+        { "type": "textarea", "id": "note", "label": "t:settings.hero_note", "info": "t:settings.hero_note_info" },
+        {
+          "type": "select", "id": "icon", "label": "t:settings.placeholder_icon",
+          "options": [
+            { "value": "dice", "label": "t:options.icon_dice" },
+            { "value": "planner", "label": "t:options.icon_planner" },
+            { "value": "notebook", "label": "t:options.icon_notebook" },
+            { "value": "gift", "label": "t:options.icon_gift" },
+            { "value": "heart", "label": "t:options.icon_heart" },
+            { "value": "users", "label": "t:options.icon_users" },
+            { "value": "star", "label": "t:options.icon_star" }
+          ],
+          "default": "dice"
+        },
+        { "type": "color_scheme", "id": "color_scheme", "label": "t:settings.color_scheme", "default": "scheme-2" },
+        { "type": "header", "content": "t:settings.hero_photos", "info": "t:settings.hero_photos_info" },
+        { "type": "image_picker", "id": "photo_1", "label": "t:settings.photo_1" },
+        { "type": "image_picker", "id": "photo_2", "label": "t:settings.photo_2" },
+        { "type": "image_picker", "id": "photo_3", "label": "t:settings.photo_3" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "t:names.hero",
+      "blocks": [
+        { "type": "slide", "settings": { "heading": "Більше,\nніж ігри", "button_label": "Дивитися колекції" } },
+        { "type": "slide", "settings": { "heading": "Календарі\n2027", "button_label": "Обрати свій", "icon": "planner" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

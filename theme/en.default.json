@@ -1,0 +1,219 @@
+{
+  "general": {
+    "home": "Головна",
+    "breadcrumbs": "Хлібні крихти",
+    "error": "Щось пішло не так. Спробуйте ще раз.",
+    "accessibility": {
+      "skip_to_content": "Перейти до вмісту",
+      "close": "Закрити"
+    },
+    "pagination": {
+      "label": "Сторінки",
+      "page": "Сторінка {{ page }}",
+      "previous": "Попередня сторінка",
+      "next": "Наступна сторінка"
+    },
+    "search": {
+      "title": "Пошук",
+      "label": "Пошук",
+      "placeholder": "Що шукаємо?",
+      "submit": "Шукати",
+      "collections": "Категорії",
+      "products": "Товари",
+      "view_all": "Усі результати для «{{ terms }}»",
+      "no_results": "За запитом «{{ terms }}» нічого не знайдено",
+      "results_count": {
+        "one": "{{ count }} результат для «{{ terms }}»",
+        "few": "{{ count }} результати для «{{ terms }}»",
+        "many": "{{ count }} результатів для «{{ terms }}»",
+        "other": "{{ count }} результатів для «{{ terms }}»"
+      }
+    },
+    "slider": {
+      "prev": "Назад",
+      "next": "Далі"
+    },
+    "newsletter": {
+      "email": "Ваш email",
+      "submit": "Підписатися",
+      "success": "Дякуємо! Ви підписалися."
+    },
+    "password": {
+      "notify": "Повідомте мене",
+      "owner": "Ви власник магазину?",
+      "label": "Пароль",
+      "enter": "Увійти"
+    }
+  },
+  "sections": {
+    "announcement": {
+      "label": "Оголошення"
+    },
+    "hero": {
+      "label": "Головний банер"
+    },
+    "header": {
+      "menu": "Меню",
+      "main_nav": "Головне меню",
+      "view_all": "Усі: {{ title }}",
+      "wishlist": "Обране",
+      "pickup": "Самовивіз: {{ address }}"
+    },
+    "featured": {
+      "view_all": "Дивитися всі",
+      "placeholder_title": "Назва гри"
+    },
+    "footer": {
+      "pickup": "Самовивіз",
+      "payment": "Способи оплати"
+    },
+    "reviews": {
+      "rating": "Оцінка {{ rating }} з 5"
+    }
+  },
+  "products": {
+    "product": {
+      "add_to_cart": "Додати в кошик",
+      "add_short": "В кошик",
+      "added": "Додано в кошик",
+      "choose_options": "Обрати варіант",
+      "sold_out": "Немає в наявності",
+      "unavailable": "Недоступно",
+      "notify_me": "Повідомити про наявність",
+      "new": "Новинка",
+      "price": "Ціна",
+      "sale_price": "Ціна зі знижкою",
+      "regular_price": "Звичайна ціна",
+      "price_from": "від {{ price }}",
+      "in_stock": "В наявності, відправимо за 1–2 дні",
+      "low_stock": {
+        "one": "Залишилась {{ count }} штука",
+        "few": "Залишилось {{ count }} штуки",
+        "many": "Залишилось {{ count }} штук",
+        "other": "Залишилось {{ count }} штук"
+      },
+      "made_to_order": "Друкується на замовлення",
+      "quantity": "Кількість",
+      "qty_decrease": "Зменшити кількість",
+      "qty_increase": "Збільшити кількість",
+      "media_label": "Фото {{ index }} з {{ count }}",
+      "description": "Опис",
+      "shipping": "Доставка й оплата",
+      "returns": "Повернення",
+      "pickup_available": "Самовивіз: {{ location }} — {{ time }}",
+      "pickup_generic": "Безкоштовний самовивіз у {{ address }}"
+    },
+    "specs": {
+      "players": "Гравців",
+      "age": "Вік",
+      "time": "Тривалість"
+    },
+    "notify": {
+      "title": "Повідомимо, щойно гра з'явиться",
+      "submit": "Повідомити мене",
+      "success": "Дякуємо! Напишемо, щойно товар повернеться.",
+      "subject": "Повідомити про наявність",
+      "body": "Покупець хоче знати про наявність"
+    }
+  },
+  "collections": {
+    "all_title": "Усі категорії",
+    "empty": "Тут поки порожньо",
+    "count": {
+      "one": "{{ count }} товар",
+      "few": "{{ count }} товари",
+      "many": "{{ count }} товарів",
+      "other": "{{ count }} товарів"
+    },
+    "sort": {
+      "label": "Сортувати",
+      "options": {
+        "manual": "Рекомендовані",
+        "best_selling": "Популярні",
+        "title_ascending": "Назва: А–Я",
+        "title_descending": "Назва: Я–А",
+        "price_ascending": "Спершу дешевші",
+        "price_descending": "Спершу дорожчі",
+        "created_ascending": "Спершу старіші",
+        "created_descending": "Спершу новіші",
+        "relevance": "За відповідністю",
+        "most_relevant": "За відповідністю"
+      }
+    },
+    "filters": {
+      "availability": "Наявність",
+      "in_stock": "В наявності",
+      "out_of_stock": "Немає в наявності",
+      "price": "Ціна",
+      "type": "Тип",
+      "vendor": "Видавець",
+      "title": "Фільтри",
+      "clear": "Скинути фільтри",
+      "from": "Від",
+      "to": "До",
+      "show": {
+        "one": "Показати {{ count }} товар",
+        "few": "Показати {{ count }} товари",
+        "many": "Показати {{ count }} товарів",
+        "other": "Показати {{ count }} товарів"
+      }
+    }
+  },
+  "cart": {
+    "title": "Кошик",
+    "item_count": {
+      "one": "{{ count }} товар",
+      "few": "{{ count }} товари",
+      "many": "{{ count }} товарів",
+      "other": "{{ count }} товарів"
+    },
+    "checkout": "Оформити замовлення",
+    "continue": "До покупок",
+    "view_cart": "Переглянути кошик",
+    "empty": "Кошик порожній",
+    "empty_text": "Саме час обрати гру для наступного вечора з друзями.",
+    "remove": "Видалити",
+    "quantity": "Кількість",
+    "decrease": "Менше: {{ title }}",
+    "increase": "Більше: {{ title }}",
+    "subtotal": "Разом",
+    "total": "Сума",
+    "product": "Товар",
+    "update": "Оновити",
+    "taxes_note": "Податки та доставка розраховуються під час оформлення.",
+    "note": "Коментар до замовлення",
+    "note_placeholder": "Наприклад: запакуйте як подарунок",
+    "free_shipping_remaining_html": "Ще <strong>{{ amount }}</strong> до безкоштовної доставки",
+    "free_shipping_reached": "У вас безкоштовна доставка!",
+    "free_shipping_progress": "Прогрес до безкоштовної доставки"
+  },
+  "customer": {
+    "account": {
+      "title": "Мій акаунт"
+    },
+    "login": {
+      "title": "Увійти"
+    }
+  },
+  "templates": {
+    "contact": {
+      "name": "Ім'я",
+      "phone": "Телефон",
+      "message": "Повідомлення",
+      "submit": "Надіслати",
+      "success": "Дякуємо! Ми відповімо найближчим часом."
+    },
+    "404": {
+      "title": "Сторінку не знайдено",
+      "text": "Схоже, ця сторінка загубилась, як кубик під диваном."
+    }
+  },
+  "gift_card": {
+    "title": "Подарункова карта",
+    "initial": "Початковий номінал: {{ value }}",
+    "expired": "Карта недійсна",
+    "expires": "Дійсна до {{ date }}",
+    "shop": "До магазину",
+    "print": "Роздрукувати"
+  }
+}

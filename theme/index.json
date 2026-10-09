@@ -1,0 +1,387 @@
+{
+  "sections": {
+    "hero": {
+      "type": "hero-banner",
+      "blocks": {
+        "s1": {
+          "type": "slide",
+          "settings": {
+            "image_position": "right center",
+            "heading": "Більше,\nніж ігри",
+            "text": "<p>Українські настільні ігри, подарунки та улюблені бренди в США</p>",
+            "button_label": "Дивитися колекції",
+            "link": "shopify://collections/vsi-nastilni-ihry",
+            "icon": "dice",
+            "color_scheme": "scheme-2",
+            "image": "shopify://shop_images/nich-hero-v3-games.jpg",
+            "image_mobile": "shopify://shop_images/nich-hero-v3-games-mobile.jpg",
+            "photo_1": "shopify://shop_images/nich-hero-games-1.jpg",
+            "photo_2": "shopify://shop_images/nich-hero-games-2.jpg",
+            "photo_3": "shopify://shop_images/nich-hero-games-3.jpg"
+          }
+        },
+        "s2": {
+          "type": "slide",
+          "settings": {
+            "heading": "Календарі\n2027",
+            "text": "<p>Календарі з передбаченнями та календар самотурботи — подарунок, що радує цілий рік</p>",
+            "button_label": "Обрати календар",
+            "link": "shopify://collections/kalendari-2027",
+            "icon": "planner",
+            "color_scheme": "scheme-7",
+            "image": "shopify://shop_images/nich-hero-v3-calendars.jpg",
+            "image_mobile": "shopify://shop_images/nich-hero-v3-calendars-mobile.jpg",
+            "image_position": "right center",
+            "photo_1": "shopify://shop_images/nich-hero-calendars-1.jpg",
+            "photo_2": "shopify://shop_images/nich-hero-calendars-2.jpg",
+            "photo_3": "shopify://shop_images/nich-hero-calendars-3.jpg"
+          }
+        },
+        "s3": {
+          "type": "slide",
+          "settings": {
+            "heading": "Канцелярія,\nщо надихає",
+            "text": "<p>Блокноти, планери, щоденники, фотоальбоми та листівки від українських брендів</p>",
+            "button_label": "До канцелярії",
+            "link": "shopify://collections/kantseliariia",
+            "icon": "notebook",
+            "color_scheme": "scheme-6",
+            "image": "shopify://shop_images/nich-hero-v3-stationery.jpg",
+            "image_mobile": "shopify://shop_images/nich-hero-v3-stationery-mobile.jpg",
+            "image_position": "right center",
+            "photo_1": "shopify://shop_images/nich-hero-stationery-1.jpg",
+            "photo_2": "shopify://shop_images/nich-hero-stationery-2.jpg",
+            "photo_3": "shopify://shop_images/nich-hero-stationery-3.jpg"
+          }
+        }
+      },
+      "block_order": [
+        "s1",
+        "s2",
+        "s3"
+      ],
+      "settings": {
+        "autoplay": true,
+        "autoplay_speed": 5,
+        "height": "medium",
+        "overlay": 55
+      }
+    },
+    "benefits": {
+      "type": "benefits",
+      "blocks": {
+        "b1": {
+          "type": "benefit",
+          "settings": {
+            "icon": "shield",
+            "text": "Офіційна продукція"
+          }
+        },
+        "b2": {
+          "type": "benefit",
+          "settings": {
+            "icon": "truck",
+            "text": "Доставка по США та Канаді"
+          }
+        },
+        "b3": {
+          "type": "benefit",
+          "settings": {
+            "icon": "store",
+            "text": "Самовивіз у Des Plaines, IL"
+          }
+        },
+        "b4": {
+          "type": "benefit",
+          "settings": {
+            "icon": "heart",
+            "text": "Підтримуємо український бізнес"
+          }
+        }
+      },
+      "block_order": [
+        "b1",
+        "b2",
+        "b3",
+        "b4"
+      ],
+      "settings": {
+        "color_scheme": "scheme-6"
+      }
+    },
+    "bestsellers": {
+      "type": "featured-collection",
+      "settings": {
+        "collection": "vsi-nastilni-ihry",
+        "heading": "Хіти продажу",
+        "show_spark": true,
+        "show_view_all": true,
+        "only_available": true,
+        "layout": "slider",
+        "products_to_show": 10,
+        "columns": 5,
+        "color_scheme": "scheme-1",
+        "padding_top": 52,
+        "padding_bottom": 20
+      }
+    },
+    "for-whom": {
+      "type": "collection-tiles",
+      "blocks": {
+        "t1": {
+          "type": "tile",
+          "settings": {
+            "collection": "dlia-vechirok",
+            "label": "Для компанії",
+            "icon": "users"
+          }
+        },
+        "t2": {
+          "type": "tile",
+          "settings": {
+            "collection": "simeini",
+            "label": "Для сім'ї",
+            "icon": "heart"
+          }
+        },
+        "t3": {
+          "type": "tile",
+          "settings": {
+            "collection": "dlia-zakokhanykh",
+            "label": "Для пари",
+            "icon": "heart"
+          }
+        },
+        "t4": {
+          "type": "tile",
+          "settings": {
+            "collection": "dlia-doroslykh",
+            "label": "18+",
+            "icon": "star"
+          }
+        },
+        "t5": {
+          "type": "tile",
+          "settings": {
+            "collection": "dlia-pidlitkiv",
+            "label": "Для дітей і підлітків",
+            "icon": "age"
+          }
+        },
+        "t6": {
+          "type": "tile",
+          "settings": {
+            "collection": "v-dorohu",
+            "label": "В дорогу",
+            "icon": "box"
+          }
+        }
+      },
+      "block_order": [
+        "t1",
+        "t2",
+        "t3",
+        "t4",
+        "t5",
+        "t6"
+      ],
+      "settings": {
+        "heading": "Для якої компанії?",
+        "link_label": "Усі ігри",
+        "link": "shopify://collections/vsi-nastilni-ihry",
+        "style": "card",
+        "columns": 6,
+        "color_scheme": "scheme-1",
+        "padding_top": 28,
+        "padding_bottom": 24
+      }
+    },
+    "ukraine": {
+      "type": "featured-collection",
+      "settings": {
+        "collection": "ukrainska-kolektsiia",
+        "heading": "Про Україну",
+        "show_spark": false,
+        "subheading": "<p>Вікторини, «Монополії» українських міст, Еліас про Україну та ігри про нашу історію.</p>",
+        "show_view_all": true,
+        "only_available": true,
+        "layout": "slider",
+        "products_to_show": 10,
+        "columns": 5,
+        "color_scheme": "scheme-6",
+        "padding_top": 52,
+        "padding_bottom": 36
+      }
+    },
+    "series": {
+      "type": "collection-tiles",
+      "blocks": {
+        "s1": {
+          "type": "tile",
+          "settings": {
+            "collection": "elias",
+            "label": "Еліас",
+            "icon": "dice"
+          }
+        },
+        "s2": {
+          "type": "tile",
+          "settings": {
+            "collection": "vechornytsi",
+            "label": "Вечорниці",
+            "icon": "dice"
+          }
+        },
+        "s3": {
+          "type": "tile",
+          "settings": {
+            "collection": "mafiia",
+            "label": "Мафія",
+            "icon": "dice"
+          }
+        },
+        "s4": {
+          "type": "tile",
+          "settings": {
+            "collection": "monopoliia",
+            "label": "Монополія",
+            "icon": "dice"
+          }
+        },
+        "s5": {
+          "type": "tile",
+          "settings": {
+            "collection": "katan",
+            "label": "Катан",
+            "icon": "dice"
+          }
+        }
+      },
+      "block_order": [
+        "s1",
+        "s2",
+        "s3",
+        "s4",
+        "s5"
+      ],
+      "settings": {
+        "heading": "Улюблені серії",
+        "style": "card",
+        "columns": 5,
+        "color_scheme": "scheme-1",
+        "padding_top": 48,
+        "padding_bottom": 20
+      }
+    },
+    "new": {
+      "type": "featured-collection",
+      "settings": {
+        "collection": "novynky",
+        "heading": "Новинки",
+        "show_spark": false,
+        "show_view_all": true,
+        "only_available": true,
+        "layout": "slider",
+        "products_to_show": 10,
+        "columns": 5,
+        "color_scheme": "scheme-1",
+        "padding_top": 40,
+        "padding_bottom": 20
+      }
+    },
+    "promo": {
+      "type": "promo-banner",
+      "settings": {
+        "heading": "Збирай\nсвоїх",
+        "text": "<p>Настільні ігри для друзів, родини та довгих вечорів</p>",
+        "button_label": "Обрати гру",
+        "button_link": "shopify://collections/vsi-nastilni-ihry",
+        "color_scheme": "scheme-7",
+        "padding_top": 24,
+        "padding_bottom": 56
+      }
+    },
+    "stationery": {
+      "type": "collection-tiles",
+      "blocks": {
+        "k1": {
+          "type": "tile",
+          "settings": {
+            "label": "Фотоальбоми",
+            "link": "shopify://collections/fotoalbomy",
+            "icon": "album"
+          }
+        },
+        "k2": {
+          "type": "tile",
+          "settings": {
+            "label": "Блокноти",
+            "link": "shopify://collections/bloknoty",
+            "icon": "notebook"
+          }
+        },
+        "k3": {
+          "type": "tile",
+          "settings": {
+            "label": "Планери",
+            "link": "shopify://collections/planery",
+            "icon": "planner"
+          }
+        },
+        "k4": {
+          "type": "tile",
+          "settings": {
+            "label": "Щоденники",
+            "link": "shopify://collections/shchodennyky",
+            "icon": "journal"
+          }
+        },
+        "k5": {
+          "type": "tile",
+          "settings": {
+            "label": "Листівки",
+            "link": "shopify://collections/lystivky",
+            "icon": "postcard"
+          }
+        },
+        "k6": {
+          "type": "tile",
+          "settings": {
+            "label": "Стікери та закладки",
+            "link": "shopify://collections/stikery-ta-zakladky",
+            "icon": "sticker"
+          }
+        }
+      },
+      "block_order": [
+        "k1",
+        "k2",
+        "k3",
+        "k4",
+        "k5",
+        "k6"
+      ],
+      "settings": {
+        "heading": "Канцелярія",
+        "link_label": "Уся канцелярія",
+        "link": "shopify://collections/kantseliariia",
+        "style": "card",
+        "columns": 6,
+        "color_scheme": "scheme-1",
+        "padding_top": 20,
+        "padding_bottom": 48
+      }
+    }
+  },
+  "order": [
+    "hero",
+    "benefits",
+    "bestsellers",
+    "for-whom",
+    "stationery",
+    "series",
+    "ukraine",
+    "new",
+    "promo"
+  ]
+}
