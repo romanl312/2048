@@ -13,8 +13,8 @@
             "link": "shopify://collections/vsi-nastilni-ihry",
             "icon": "dice",
             "color_scheme": "scheme-2",
-            "image": "shopify://shop_images/nich-hero-v3-games.jpg",
-            "image_mobile": "shopify://shop_images/nich-hero-v3-games-mobile.jpg"
+            "image": "shopify://shop_images/nich-hero-v4-games.jpg",
+            "image_mobile": "shopify://shop_images/nich-hero-v4-games-mobile.jpg"
           }
         },
         "s2": {
@@ -26,8 +26,8 @@
             "link": "shopify://collections/kalendari-2027",
             "icon": "planner",
             "color_scheme": "scheme-7",
-            "image": "shopify://shop_images/nich-hero-v3-calendars.jpg",
-            "image_mobile": "shopify://shop_images/nich-hero-v3-calendars-mobile.jpg",
+            "image": "shopify://shop_images/nich-hero-v4-calendars.jpg",
+            "image_mobile": "shopify://shop_images/nich-hero-v4-calendars-mobile.jpg",
             "image_position": "right center"
           }
         },
@@ -40,8 +40,8 @@
             "link": "shopify://collections/kantseliariia",
             "icon": "notebook",
             "color_scheme": "scheme-6",
-            "image": "shopify://shop_images/nich-hero-v3-stationery.jpg",
-            "image_mobile": "shopify://shop_images/nich-hero-v3-stationery-mobile.jpg",
+            "image": "shopify://shop_images/nich-hero-v4-stationery.jpg",
+            "image_mobile": "shopify://shop_images/nich-hero-v4-stationery-mobile.jpg",
             "image_position": "right center"
           }
         }
