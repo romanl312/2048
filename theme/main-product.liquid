@@ -179,9 +179,6 @@
           {%- if section.settings.perk_shipping != blank -%}
             <li>{%- render 'icon', name: 'truck' -%}<span>{{ section.settings.perk_shipping }}</span></li>
           {%- endif -%}
-          {%- if section.settings.perk_gift != blank -%}
-            <li>{%- render 'icon', name: 'gift' -%}<span>{{ section.settings.perk_gift }}</span></li>
-          {%- endif -%}
         </ul>
 
         <div class="product__accordions">
@@ -220,7 +217,6 @@
     { "type": "checkbox", "id": "show_dynamic_checkout", "label": "t:settings.show_dynamic_checkout", "default": true },
     { "type": "range", "id": "low_stock_threshold", "label": "t:settings.low_stock_threshold", "min": 1, "max": 10, "step": 1, "default": 3 },
     { "type": "text", "id": "perk_shipping", "label": "t:settings.perk_shipping", "default": "Безкоштовна доставка по США від $100" },
-    { "type": "text", "id": "perk_gift", "label": "t:settings.perk_gift", "default": "Можемо запакувати як подарунок — напишіть у коментарі до замовлення" },
     { "type": "richtext", "id": "shipping_text", "label": "t:settings.shipping_text", "default": "<p>Відправляємо з Des Plaines, IL протягом 1–2 робочих днів. Доставка по США — 2–5 днів, у Канаду — 7–14 днів. Безкоштовна доставка по США від $100.</p>" },
     { "type": "richtext", "id": "returns_text", "label": "t:settings.returns_text", "default": "<p>Нерозпаковані ігри можна повернути протягом 14 днів. Одяг, надрукований на замовлення, повертається лише у разі браку.</p>" }
   ]
