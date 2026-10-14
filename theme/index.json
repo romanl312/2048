@@ -53,7 +53,7 @@
       ],
       "settings": {
         "autoplay": true,
-        "autoplay_speed": 5,
+        "autoplay_speed": 3,
         "height": "medium",
         "overlay": 55
       }
@@ -367,6 +367,23 @@
         "padding_top": 24,
         "padding_bottom": 56
       }
+    },
+    "puzzles": {
+      "type": "featured-collection",
+      "settings": {
+        "collection": "pazly",
+        "heading": "Пазли",
+        "show_spark": false,
+        "subheading": "<p>Українські міста на 1000 елементів: Київ, Львів, Одеса, Дніпро та Харків.</p>",
+        "show_view_all": true,
+        "only_available": false,
+        "layout": "slider",
+        "products_to_show": 10,
+        "columns": 5,
+        "color_scheme": "scheme-1",
+        "padding_top": 44,
+        "padding_bottom": 36
+      }
     }
   },
   "order": [
@@ -376,6 +393,7 @@
     "for-whom",
     "stationery",
     "series",
+    "puzzles",
     "ukraine",
     "new",
     "blog"
