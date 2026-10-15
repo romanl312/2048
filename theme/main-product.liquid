@@ -26,6 +26,7 @@
     </nav>
 
     <div class="product__grid">
+      {%- assign zoom_index = 0 -%}
       <product-gallery class="product__gallery">
         <ul class="product__slides" data-gallery-track role="list">
           {%- for media in product.media -%}
@@ -34,12 +35,16 @@
               {%- case media.media_type -%}
                 {%- when 'image' -%}
                   {%- if forloop.first -%}{%- assign m_load = 'eager' -%}{%- else -%}{%- assign m_load = 'lazy' -%}{%- endif -%}
-                  {{ media | image_url: width: 1400 | image_tag:
-                    widths: '400, 600, 800, 1000, 1200, 1400',
-                    sizes: '(min-width: 990px) 50vw, 100vw',
-                    loading: m_load,
-                    alt: m_alt
-                  }}
+                  <button type="button" class="product__zoom" data-zoom-open="{{ zoom_index }}" aria-haspopup="dialog" aria-label="{{ 'products.product.zoom' | t: index: forloop.index, count: media_count }}">
+                    {{ media | image_url: width: 1400 | image_tag:
+                      widths: '400, 600, 800, 1000, 1200, 1400',
+                      sizes: '(min-width: 990px) 50vw, 100vw',
+                      loading: m_load,
+                      alt: m_alt
+                    }}
+                    <span class="product__zoom-hint" aria-hidden="true">{%- render 'icon', name: 'zoom' -%}</span>
+                  </button>
+                  {%- assign zoom_index = zoom_index | plus: 1 -%}
                 {%- when 'video', 'external_video' -%}
                   {{ media | media_tag: image_size: '1200x', controls: true, playsinline: true }}
                 {%- else -%}
@@ -60,6 +65,35 @@
               </li>
             {%- endfor -%}
           </ul>
+        {%- endif -%}
+        {%- assign zoom_count = product.media | where: 'media_type', 'image' | size -%}
+        {%- if zoom_count > 0 -%}
+          <dialog class="lightbox" data-lightbox aria-label="{{ 'products.product.zoom_dialog' | t: title: product.title | escape }}">
+            <div class="lightbox__track" data-lightbox-track>
+              {%- for media in product.media -%}
+                {%- if media.media_type == 'image' -%}
+                  {%- assign m_alt = media.alt | default: product.title | escape -%}
+                  <div class="lightbox__slide" data-lightbox-slide>
+                    {{ media | image_url: width: 2400 | image_tag:
+                      widths: '800, 1200, 1600, 2000, 2400',
+                      sizes: '100vw',
+                      loading: 'lazy',
+                      class: 'lightbox__img',
+                      draggable: 'false',
+                      alt: m_alt
+                    }}
+                  </div>
+                {%- endif -%}
+              {%- endfor -%}
+            </div>
+            <button type="button" class="lightbox__btn lightbox__close" data-lightbox-close aria-label="{{ 'general.accessibility.close' | t }}">{%- render 'icon', name: 'close' -%}</button>
+            {%- if zoom_count > 1 -%}
+              <button type="button" class="lightbox__btn lightbox__prev" data-lightbox-prev aria-label="{{ 'general.slider.prev' | t }}">{%- render 'icon', name: 'chevron-left' -%}</button>
+              <button type="button" class="lightbox__btn lightbox__next" data-lightbox-next aria-label="{{ 'general.slider.next' | t }}">{%- render 'icon', name: 'chevron-right' -%}</button>
+              <p class="lightbox__count" data-lightbox-count aria-live="polite">1 / {{ zoom_count }}</p>
+            {%- endif -%}
+            <p class="lightbox__tip" aria-hidden="true">{{ 'products.product.zoom_tip' | t }}</p>
+          </dialog>
         {%- endif -%}
       </product-gallery>
 

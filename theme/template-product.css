@@ -88,3 +88,84 @@
   .product__buy .quantity { height: 52px; }
   .product__price .price__current { font-size: 1.6rem; }
 }
+
+/* Збільшення фото товару */
+.product__zoom {
+  position: relative; display: block; width: 100%; height: 100%;
+  padding: 0; margin: 0; border: 0; background: none; color: inherit; cursor: zoom-in;
+}
+.product__zoom:focus-visible { outline: 2px solid rgb(var(--c-accent)); outline-offset: -4px; border-radius: var(--radius); }
+.product__zoom-hint {
+  position: absolute; right: 14px; bottom: 14px; display: grid; place-items: center;
+  width: 44px; height: 44px; border-radius: 50%;
+  background: rgba(255, 255, 255, .92); color: rgb(var(--c-text));
+  box-shadow: 0 4px 14px rgba(14, 36, 56, .14);
+  transition: transform .2s ease, background-color .2s ease;
+}
+.product__zoom-hint .icon { width: 22px; height: 22px; }
+.product__zoom:hover .product__zoom-hint { transform: scale(1.08); background: #fff; }
+
+.lightbox {
+  position: fixed; inset: 0; width: 100%; height: 100%; max-width: none; max-height: none;
+  margin: 0; padding: 0; border: 0; background: #FCF9F3; color: rgb(var(--c-text));
+  overflow: hidden;
+}
+.lightbox::backdrop { background: rgba(14, 36, 56, .6); }
+.lightbox[open] { display: block; animation: lightbox-in .22s ease-out; }
+@keyframes lightbox-in { from { opacity: 0; } to { opacity: 1; } }
+.lightbox__track {
+  display: flex; width: 100%; height: 100%;
+  overflow-x: auto; overflow-y: hidden; scroll-snap-type: x mandatory; scrollbar-width: none;
+  overscroll-behavior: contain;
+}
+.lightbox__track::-webkit-scrollbar { display: none; }
+.lightbox.is-zoomed .lightbox__track { overflow: hidden; }
+.lightbox__slide {
+  flex: 0 0 100%; height: 100%; scroll-snap-align: center; scroll-snap-stop: always;
+  display: grid; place-items: center; padding: 64px 16px 56px; overflow: hidden;
+}
+.lightbox__img {
+  max-width: 100%; max-height: 100%; width: auto; height: auto; object-fit: contain;
+  cursor: zoom-in; user-select: none; -webkit-user-drag: none;
+}
+.lightbox__slide.is-zoomed { display: block; padding: 0; overflow: auto; cursor: grab; scrollbar-width: none; }
+.lightbox__slide.is-zoomed::-webkit-scrollbar { display: none; }
+.lightbox__slide.is-zoomed.is-dragging { cursor: grabbing; }
+.lightbox__slide.is-zoomed .lightbox__img { max-width: none; max-height: none; cursor: zoom-out; }
+
+.lightbox__btn {
+  position: absolute; z-index: 2; display: grid; place-items: center;
+  width: 48px; height: 48px; padding: 0; border: 0; border-radius: 50%;
+  background: #fff; color: rgb(var(--c-text)); cursor: pointer;
+  box-shadow: 0 6px 18px rgba(14, 36, 56, .16);
+  transition: transform .15s ease;
+}
+.lightbox__btn:hover { transform: scale(1.06); }
+.lightbox__btn:focus-visible { outline: 2px solid rgb(var(--c-accent)); outline-offset: 3px; }
+.lightbox__btn .icon { width: 24px; height: 24px; }
+.lightbox__close { top: 12px; right: 12px; }
+.lightbox__prev, .lightbox__next { top: 50%; transform: translateY(-50%); }
+.lightbox__prev:hover, .lightbox__next:hover { transform: translateY(-50%) scale(1.06); }
+.lightbox__prev { left: 16px; }
+.lightbox__next { right: 16px; }
+.lightbox__btn[disabled] { opacity: .35; cursor: default; }
+.lightbox__count {
+  position: absolute; top: 22px; left: 50%; transform: translateX(-50%); z-index: 2; margin: 0;
+  font-weight: 700; font-size: .95rem; font-variant-numeric: tabular-nums;
+}
+.lightbox__tip {
+  position: absolute; bottom: 16px; left: 50%; transform: translateX(-50%); z-index: 2; margin: 0;
+  padding: 6px 14px; border-radius: 999px; background: rgba(14, 36, 56, .75); color: #fff;
+  font-size: .82rem; white-space: nowrap; pointer-events: none; transition: opacity .3s ease;
+}
+.lightbox.is-zoomed .lightbox__tip, .lightbox.tip-hidden .lightbox__tip { opacity: 0; }
+.lightbox.is-zoomed .lightbox__prev, .lightbox.is-zoomed .lightbox__next { opacity: 0; pointer-events: none; }
+@media (max-width: 749px) {
+  .product__zoom-hint { width: 38px; height: 38px; right: 10px; bottom: 10px; }
+  .product__zoom-hint .icon { width: 19px; height: 19px; }
+  .lightbox__prev, .lightbox__next { display: none; }
+  .lightbox__slide { padding: 60px 8px 52px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .lightbox[open] { animation: none; }
+}

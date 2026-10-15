@@ -311,6 +311,108 @@
     }
   });
 
+  /* ---------- Сторінка товару: збільшення фото ---------- */
+  const ZOOM = 2.4;
+  const reduceMotion = () => window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  function setupLightbox(gallery) {
+    const dialog = qs('[data-lightbox]', gallery);
+    if (!dialog || typeof dialog.showModal !== 'function') return;
+    const track = qs('[data-lightbox-track]', dialog);
+    const slides = qsa('[data-lightbox-slide]', dialog);
+    const prev = qs('[data-lightbox-prev]', dialog);
+    const next = qs('[data-lightbox-next]', dialog);
+    const count = qs('[data-lightbox-count]', dialog);
+    let index = 0;
+    let opener = null;
+
+    const current = () => Math.round(track.scrollLeft / (track.clientWidth || 1));
+    const update = () => {
+      index = Math.max(0, Math.min(slides.length - 1, current()));
+      if (count) count.textContent = `${index + 1} / ${slides.length}`;
+      if (prev) prev.disabled = index === 0;
+      if (next) next.disabled = index === slides.length - 1;
+    };
+    const unzoom = () => {
+      slides.forEach((s) => {
+        if (!s.classList.contains('is-zoomed')) return;
+        s.classList.remove('is-zoomed');
+        const img = qs('img', s); if (img) img.style.width = '';
+        s.scrollTo(0, 0);
+      });
+      dialog.classList.remove('is-zoomed');
+    };
+    const go = (i, smooth = true) => {
+      unzoom();
+      i = Math.max(0, Math.min(slides.length - 1, i));
+      track.scrollTo({ left: i * track.clientWidth, behavior: smooth && !reduceMotion() ? 'smooth' : 'auto' });
+      index = i; update();
+    };
+    const zoomAt = (slide, img, clientX, clientY) => {
+      const r = img.getBoundingClientRect();
+      const fx = r.width ? (clientX - r.left) / r.width : 0.5;
+      const fy = r.height ? (clientY - r.top) / r.height : 0.5;
+      const w = Math.min(img.naturalWidth || r.width * ZOOM, r.width * ZOOM);
+      const finalW = Math.max(w, slide.clientWidth * 1.2);
+      slide.classList.add('is-zoomed'); dialog.classList.add('is-zoomed', 'tip-hidden');
+      img.style.width = `${finalW}px`;
+      const h = finalW * (r.height / (r.width || 1));
+      slide.scrollLeft = Math.max(0, fx * finalW - slide.clientWidth / 2);
+      slide.scrollTop = Math.max(0, fy * h - slide.clientHeight / 2);
+    };
+
+    // відкриття
+    gallery.addEventListener('click', (e) => {
+      const btn = e.target.closest('[data-zoom-open]');
+      if (!btn) return;
+      opener = btn;
+      dialog.showModal();
+      document.documentElement.style.overflow = 'hidden';
+      slides.forEach((s) => { const img = qs('img', s); if (img) img.loading = 'eager'; });
+      requestAnimationFrame(() => go(parseInt(btn.dataset.zoomOpen, 10) || 0, false));
+    });
+    dialog.addEventListener('close', () => {
+      unzoom();
+      dialog.classList.remove('tip-hidden');
+      document.documentElement.style.overflow = '';
+      if (opener) opener.focus();
+    });
+    track.addEventListener('scroll', () => { if (!dialog.classList.contains('is-zoomed')) update(); }, { passive: true });
+    if (prev) prev.addEventListener('click', () => go(index - 1));
+    if (next) next.addEventListener('click', () => go(index + 1));
+    qs('[data-lightbox-close]', dialog).addEventListener('click', () => dialog.close());
+    dialog.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowRight') { e.preventDefault(); go(index + 1); }
+      if (e.key === 'ArrowLeft') { e.preventDefault(); go(index - 1); }
+    });
+
+    // перетягування збільшеного фото мишею
+    let drag = null;
+    slides.forEach((slide) => {
+      slide.addEventListener('pointerdown', (e) => {
+        if (e.pointerType !== 'mouse' || !slide.classList.contains('is-zoomed')) return;
+        drag = { slide, x: e.clientX, y: e.clientY, l: slide.scrollLeft, t: slide.scrollTop, moved: false };
+      });
+      // клік по фото — наблизити/віддалити; клік по порожньому місцю — закрити
+      slide.addEventListener('click', (e) => {
+        if (drag && drag.moved) { drag = null; return; }
+        drag = null;
+        const img = e.target.closest('img');
+        if (slide.classList.contains('is-zoomed')) { unzoom(); return; }
+        if (img) zoomAt(slide, img, e.clientX, e.clientY);
+        else dialog.close();
+      });
+    });
+    window.addEventListener('pointermove', (e) => {
+      if (!drag) return;
+      const dx = e.clientX - drag.x; const dy = e.clientY - drag.y;
+      if (Math.abs(dx) + Math.abs(dy) > 4) { drag.moved = true; drag.slide.classList.add('is-dragging'); }
+      drag.slide.scrollLeft = drag.l - dx; drag.slide.scrollTop = drag.t - dy;
+    });
+    window.addEventListener('pointerup', () => { if (drag) drag.slide.classList.remove('is-dragging'); });
+    window.addEventListener('resize', () => { if (dialog.open && !dialog.classList.contains('is-zoomed')) go(index, false); });
+  }
+  qsa('product-gallery').forEach(setupLightbox);
+
   /* ---------- Сторінка товару: варіанти ---------- */
   customElements.define('variant-picker', class extends HTMLElement {
     connectedCallback() {
